@@ -1,0 +1,120 @@
+{
+    "disallowCommaBeforeLineBreak"                : null,
+    "disallowDanglingUnderscores"                 : true,
+    "disallowEmptyBlocks"                         : true,
+    "disallowImplicitTypeConversion" : [
+        "numeric",
+        "boolean",
+        "binary",
+        "string"
+    ],
+    "disallowKeywords" : [
+        "with"
+    ],
+    "disallowKeywordsOnNewLine"                   : null,
+    "disallowMixedSpacesAndTabs"                  : true,
+    "disallowMultipleLineBreaks"                  : null,
+    "disallowMultipleLineStrings"                 : true,
+    "disallowMultipleVarDecl"                     : null,
+    "disallowNewlineBeforeBlockStatements"        : true,
+    "disallowQuotedKeysInObjects"                 : true,
+    "disallowSpaceAfterBinaryOperators"           : null,
+    "disallowSpaceAfterObjectKeys"                : null,
+    "disallowSpaceAfterPrefixUnaryOperators"      : true,
+    "disallowSpaceBeforeBinaryOperators"          : null,
+    "disallowSpaceBeforePostfixUnaryOperators"    : true,
+    "disallowSpacesInAnonymousFunctionExpression" : null,
+    "disallowSpacesInConditionalExpression"       : null,
+    "disallowSpacesInFunction"                    : null,
+    "disallowSpacesInFunctionDeclaration"         : null,
+    "disallowSpacesInFunctionExpression"          : null,
+    "disallowSpacesInNamedFunctionExpression"     : null,
+    "disallowSpacesInsideParentheses"             : true,
+    "disallowTrailingComma"                       : true,
+    "disallowTrailingWhitespace"                  : true,
+    "disallowYodaConditions"                      : true,
+    "maximumLineLength" : {
+        "value"            : 140,
+        "tabSize"          : 4,
+        "allowUrlComments" : true,
+        "allowRegex"       : true
+    },
+    "requireBlocksOnNewline"                      : true,
+    "requireCamelCaseOrUpperCaseIdentifiers"      : true,
+    "requireCapitalizedConstructors"              : true,
+    "requireCommaBeforeLineBreak"                 : true,
+    "requireCurlyBraces" : [
+        "if",
+        "else",
+        "for",
+        "while",
+        "do",
+        "try",
+        "catch",
+        "case",
+        "default"
+    ],
+    "requireDotNotation"                          : true,
+    "requireKeywordsOnNewLine" : [
+        "var",
+        "return",
+        "else",
+        "for",
+        "while",
+        "do",
+        "switch",
+        "try",
+        "catch"
+    ],
+    "requireLineFeedAtFileEnd"                    : true,
+    "requireMultipleVarDecl"                      : "onevar",
+    "requireOperatorBeforeLineBreak"              : true,
+    "requirePaddingNewlinesInBlocks"              : null,
+    "requireParenthesesAroundIIFE"                : true,
+    "requireSpaceAfterBinaryOperators"            : true,
+    "requireSpaceAfterKeywords" : [
+        "var",
+        "function",
+        "return",
+        "if",
+        "else",
+        "for",
+        "while",
+        "do",
+        "switch",
+        "try",
+        "catch"
+    ],
+    "requireSpaceAfterLineComment"                : true,
+    "requireSpaceAfterObjectKeys"                 : true,
+    "requireSpaceBeforeBinaryOperators"           : true,
+    "requireSpaceBeforeBlockStatements"           : true,
+    "requireSpacesInAnonymousFunctionExpression" : {
+        "beforeOpeningCurlyBrace" : true
+    },
+    "requireSpacesInConditionalExpression"        : true,
+    "requireSpacesInFunction" : {
+        "beforeOpeningCurlyBrace" : true
+    },
+    "requireSpacesInFunctionDeclaration" : {
+        "beforeOpeningCurlyBrace" : true
+    },
+    "requireSpacesInFunctionExpression": {
+        "beforeOpeningCurlyBrace" : true
+    },
+    "requireSpacesInNamedFunctionExpression" : {
+        "beforeOpeningCurlyBrace" : true
+    },
+    "requireSpacesInsideArrayBrackets"            : null,
+    "requireSpacesInsideObjectBrackets"           : "all",
+    "requireSpacesInsideParentheses"              : null,
+    "safeContextKeyword"                          : "that",
+    "validateIndentation"                         : 4,
+    "validateJSDoc" : {
+        "checkParamNames"      : true,
+        "checkRedundantParams" : true,
+        "requireParamTypes"    : true
+    },
+    "validateLineBreaks"                          : "LF",
+    "validateQuoteMarks"                          : "'"
+}

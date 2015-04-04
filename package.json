@@ -1,0 +1,53 @@
+{
+  "name": "dangit",
+  "version": "0.1.0",
+  "description": "A utility library for random JavaScript quirks.",
+  "homepage": "https://github.com/sholladay/dangit",
+  "author": {
+    "name": "Seth Holladay",
+    "url": "http://seth-holladay.com"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/.bin/grunt test"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "~0.10.36",
+    "npm": "~2.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sholladay/dangit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sholladay/dangit/issues"
+  },
+  "license": "MPL-2.0",
+  "directories": {
+    "doc": "./doc",
+    "man": "./man",
+    "lib": "./lib",
+    "bin": "./bin"
+  },
+  "keywords": [
+    "js",
+    "type",
+    "check",
+    "quirk",
+    "utility",
+    "library"
+  ],
+  "devDependencies": {
+    "grunt": "0.4.5",
+    "grunt-cli": "0.1.13",
+    "grunt-contrib-clean": "0.6.0",
+    "grunt-contrib-jshint": "0.11.0",
+    "grunt-contrib-watch": "0.6.1",
+    "grunt-jscs": "1.2.0",
+    "grunt-jslint": "1.1.12",
+    "grunt-jsonlint": "1.0.4",
+    "grunt-selenium-webdriver": "0.2.450",
+    "intern": "2.2.2"
+  }
+}
