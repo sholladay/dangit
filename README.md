@@ -1,5 +1,6 @@
+
 # dangit
-[ ![Build status for dangit on Codeship.](https://img.shields.io/codeship/3c908cc0-888e-0132-a301-3ae5e43a70a3/master.svg?style=flat "Codeship Build Status")](https://codeship.com/projects/59478 "Codeship Build Status Image")
+[ ![Build status for dangit on Codeship.](https://img.shields.io/codeship/54787680-bd3b-0132-ea67-02fb30cbf240/master.svg?style=flat "Codeship Build Status")](https://codeship.com/projects/72554 "Codeship Build Status Image")
 
 A utility library for random JavaScript quirks.
 
@@ -8,7 +9,7 @@ A utility library for random JavaScript quirks.
  - Namespacing
  - API helpers
 
-**Version**: `0.0.4`
+**Version**: `0.1.1`
 
 **Documentation**: https://sholladay.github.io/dangit/
 
