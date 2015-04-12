@@ -9,13 +9,22 @@ A utility library for random JavaScript quirks.
  - Namespacing
  - API helpers
 
-**Version**: `0.1.1`
+**Version**: `0.1.2`
 
 **Documentation**: https://sholladay.github.io/dangit/
 
 ## Installation
 ````sh
 npm install dangit --save
+````
+
+Get it into your program.
+````javascript
+var dangit = require('dangit');
+````
+In a browser:
+````javascript
+var dangit = window.dangit;
 ````
 
 ## Usage
@@ -79,7 +88,7 @@ Notes:
  - It is destructive by default in that if any part of the chain is not a truthy object or function, it has to overwrite that property with a new object to keep going. But...
  - If you pass `false` as the last argument, it will turn off force mode, throwing an error instead. And...
  - It will never destroy anything it doesn't have to.
- - To protect you from yourself, it only ever considers an object's [own properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain "Explanation of inheritance and the prototype chain in JavaScript."). An API without this restriction would not be difficult, [file an issue](https://github.com/sholladay/dangit/issues "File an issue with the project.") if you want it.
+ - To protect you from yourself, it only ever considers an object's [own properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain "Explanation of inheritance and the prototype chain in JavaScript."). An API without this restriction would be easy, [file an issue](https://github.com/sholladay/dangit/issues "File an issue with the project.") if you want it.
 
 Once you've got a namespace, you could really use some ninjas to help solve that issue where you want everything to be coerced to an easy-to-process list. Or a unicorn - that would do nicely, too.
 
@@ -167,8 +176,25 @@ dangit.checkStamp(stamp, true);  // => true
 ````
 Note: Due to the [non-guaranteed order](http://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order "Explanation of the order objects are enumerated in and why.") of enumerating objects, this is not quite like `.stampObject()` - it can only take a simple value to check for an entire object. To compensate a bit, it does **non-strict** equality checking by default, with a third boolean argument for making it strict. [File an issue](https://github.com/sholladay/dangit/issues "File an issue with the project.") if you want more.
 
+Another task that could be simpler is processing a bunch of configuration just to ignore certain parts of it. We've got that covered, too.
+
+````javascript
+function makeUrl(customer, mediaType, file) {
+    return dangit.joinTruthy(
+        {separator : '/'},
+        '//mysite.com',
+        customer,
+        mediaType,
+        file
+    );
+}
+makeUrl('steve', 'img', 'funny.jpg');  // => '//mysite.com/steve/img/funny.jpg'
+makeUrl('jane', false, 'config.js');  // => '//mysite.com/jane/config.js'
+````
+
 ## Contributing
 See our [contribution guidelines](https://github.com/sholladay/dangit/blob/master/CONTRIBUTING.md "The guidelines for being involved in this project.") for mode details.
+
 1. [Fork it](https://github.com/sholladay/dangit/fork).
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`

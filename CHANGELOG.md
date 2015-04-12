@@ -10,6 +10,11 @@ All notable changes to this project will be documented here.
 ### Changed
  -
 
+## [0.1.2] - 2015-04-12
+### Added
+ - New helpers: `join()`, `joinTruthy()`, `space()`, `spaceTruthy()`
+ - Full support Node.js environments, without doing bad things.
+
 ## [0.1.1] - 2015-04-04
 ### Changed
  - Fixed the build status badge, which was using incorrect metadata.
@@ -28,7 +33,8 @@ All notable changes to this project will be documented here.
  - [.editorconfig]   : Config for editors to maintain styling rules.
 
 
-[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.0.6...HEAD
+[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.1.2...HEAD
+[0.1.2]:           https://github.com/sholladay/dangit/compare/v0.1.1...v0.1.2
 [0.1.1]:           https://github.com/sholladay/dangit/compare/v0.1.0...v0.1.1
 [package.json]:    http://wiki.commonjs.org/wiki/Packages/1.1
 [index.js]:        https://github.com/sholladay/dangit/blob/master/lib/index.js
