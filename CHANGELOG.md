@@ -10,6 +10,10 @@ All notable changes to this project will be documented here.
 ### Changed
  -
 
+## [0.2.1] - 2015-04-19
+### Fixed
+ - Simple mistake of not exporting the new helpers from `0.2.0`.
+
 ## [0.2.0] - 2015-04-19
 ### Added
  - New helpers: `quote()`, `quoteTruthy()`
@@ -37,7 +41,8 @@ All notable changes to this project will be documented here.
  - [.editorconfig]   : Config for editors to maintain styling rules.
 
 
-[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.2.0...HEAD
+[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.2.1...HEAD
+[0.2.1]:           https://github.com/sholladay/dangit/compare/v0.2.0...v0.2.1
 [0.2.0]:           https://github.com/sholladay/dangit/compare/v0.1.2...v0.2.0
 [0.1.2]:           https://github.com/sholladay/dangit/compare/v0.1.1...v0.1.2
 [0.1.1]:           https://github.com/sholladay/dangit/compare/v0.1.0...v0.1.1
