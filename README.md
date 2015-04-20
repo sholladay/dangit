@@ -9,7 +9,7 @@ A utility library for random JavaScript quirks.
  - Namespacing
  - API helpers
 
-**Version**: `0.1.2`
+**Version**: `0.2.0`
 
 **Documentation**: https://sholladay.github.io/dangit/
 
