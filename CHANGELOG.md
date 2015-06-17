@@ -10,6 +10,10 @@ All notable changes to this project will be documented here.
 ### Changed
  -
 
+## [0.2.3] - 2015-06-17
+### Removed
+ - Engine metadata from package.json, since it is causing install headaches and npm 3 is shifting responsibility for preventing these issues to the user, anyway.
+
 ## [0.2.2] - 2015-04-19
 ### Fixed
  - Simple comma mistakes. Better test coverage would have caught this.
@@ -45,8 +49,9 @@ All notable changes to this project will be documented here.
  - [.editorconfig]   : Config for editors to maintain styling rules.
 
 
-[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.2.2...HEAD
-[0.2.1]:           https://github.com/sholladay/dangit/compare/v0.2.1...v0.2.2
+[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.2.3...HEAD
+[0.2.3]:           https://github.com/sholladay/dangit/compare/v0.2.2...v0.2.3
+[0.2.2]:           https://github.com/sholladay/dangit/compare/v0.2.1...v0.2.2
 [0.2.1]:           https://github.com/sholladay/dangit/compare/v0.2.0...v0.2.1
 [0.2.0]:           https://github.com/sholladay/dangit/compare/v0.1.2...v0.2.0
 [0.1.2]:           https://github.com/sholladay/dangit/compare/v0.1.1...v0.1.2

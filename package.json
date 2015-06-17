@@ -1,6 +1,6 @@
 {
   "name": "dangit",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A utility library for random JavaScript quirks.",
   "homepage": "https://github.com/sholladay/dangit",
   "author": {
@@ -10,11 +10,6 @@
   "main": "index.js",
   "scripts": {
     "test": "node node_modules/.bin/grunt test"
-  },
-  "engineStrict": true,
-  "engines": {
-    "node": "~0.10.36",
-    "npm": "~2.7.0"
   },
   "repository": {
     "type": "git",
