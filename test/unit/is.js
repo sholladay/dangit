@@ -7,30 +7,33 @@ define(
         'dangit/index.js'
     ],
     function (tdd, assert, lib) {
-        with (tdd) {
-            suite('is*()', function () {
 
-                test('whatis() returns valid patterns', function () {
+        'use strict';
 
-                    // Here, the key is what we expect back from whatis()
-                    // and the property value is the input.
-                    var types = {
-                        'null'      : null,
-                        'undefined' : undefined,
-                        'boolean'   : false,
-                        'number'    : 0,
-                        'array'     : [],
-                        'object'    : {}
-                    };
+        const
+            suite = tdd.suite,
+            test  = tdd.test;
 
-                    Object.keys(types).forEach(
-                        function (key) {
-                            var got = whatis(types[key])
-                            assert.strictEqual(got, key);
-                        }
-                    );
+        suite('is', function () {
+
+            test('.whatis() returns valid patterns', function () {
+
+                // Here, the key is what we expect back from whatis()
+                // and the property value is the input.
+                const types = {
+                    'null'      : null,
+                    'undefined' : undefined,
+                    'boolean'   : false,
+                    'number'    : 0,
+                    'array'     : [],
+                    'object'    : {}
+                };
+
+                Object.keys(types).forEach((expected) => {
+                    const actual = whatis(types[expected]);
+                    assert.strictEqual(actual, expected);
                 });
             });
-        }
+        });
     }
 );

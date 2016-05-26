@@ -1,87 +1,95 @@
-// This module modifies the configuration for the testing framework to use cloud platforms.
+// This module modifies the configuration for using the testing framework with cloud platforms.
 
 define(
-    [   // dependencies....
-        './intern'  // base configuration
+    [
+        'intern',   // public API for the testing framework itself
+        './intern',  // base configuration
+        'intern/dojo/text!../package.json'
     ],
-    function (test) {
+    function (intern, config, pkgStr) {
 
-        // Setting properties on the test object here overrides the base configuration.
+        'use strict';
+
+        var pkg = JSON.parse(pkgStr),
+            build = 'UNKNOWN',
+            project = pkg.name;
+
+        if (intern.args.build) {
+            build = intern.args.build;
+        }
+        // Make sure we are in Node and not a browser.
+        else if (typeof process === 'object' && process && process.env) {
+            build = process.env.BUILD || process.env.COMMIT;
+        }
+
+        // Setting properties on the config object here overrides the base configuration.
         // Best practice is to set only what needs to be different.
 
-        // test.proxyPort = 9000;
-        // test.proxyUrl = 'http://localhost:9000/';
+        // Miscellaneous configuration, mainly for Selenium.
+        // Examples: https://code.google.com/p/selenium/wiki/DesiredCapabilities
+        config.capabilities = config.capabilities || {};
+        // BrowserStack-specific group for the build.
+        config.capabilities.project = project;
+        // Group for the test run, useful to map success history to code changes.
+        config.capabilities.build = build;
+        // Name of the test run, for logging purposes.
+        config.capabilities.name = 'Developer Test - ' + project;
 
-        // test.capabilities = {
-        //     // See examples: https://code.google.com/p/selenium/wiki/DesiredCapabilities
-        //     'name'             : 'Automated tests - dangit.js',  // name of the test run to log
-        //     'selenium-version' : '2.43.1',  // request a version, which may not always be respected
-        //     'build'            : build  // useful to log success history tied to code changes
-        // };
-        // Places where unit and/or functional tests will be run...
-        test.environments = [
-            // local-style...
-            // {
-            //     browserName: 'phantomjs',  // command line browser, very fast for tests
-            //     // pretend to be Chrome, to avoid fallbacks...
-            //     'phantomjs.page.settings.userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36'
-            // }
-            // { browserName: 'chrome' },
-            // { browserName: 'firefox' },
-            // { browserName: 'safari' }
+        // Places where unit and/or functional tests will be run.
+        config.environments = [
             // BrowserStack-style...
-            { os: 'Windows', os_version: '8.1',       browser: 'chrome',  browser_version: '36.0' }
-            // { os: 'Windows', os_version: '8.1',       browser: 'firefox', browser_version: '31.0' },
-            // { os: "Windows", os_version: '8.1',       browser: 'ie',      browser_version: '11.0' },
-            // { os: 'OS X',    os_version: 'Mavericks', browser: 'safari',  browser_version: '7.0' }
+            // Get latest: https://www.browserstack.com/automate/browsers.json
+            // { os: "Windows", os_version: '7',          browser: 'ie',      browser_version: '10.0' },
+            // { os: "Windows", os_version: '7',          browser: 'ie',      browser_version: '11.0' },
+            // { os: 'Windows', os_version: '7',          browser: 'firefox', browser_version: '44.0' },
+            // { os: 'Windows', os_version: '7',          browser: 'chrome',  browser_version: '48.0' },
+            // { os: "Windows", os_version: '10',         browser: 'ie',      browser_version: '11.0' },
+            // { os: 'Windows', os_version: '10',         browser: 'edge',    browser_version: '12.0' },
+            // { os: 'Windows', os_version: '10',         browser: 'firefox', browser_version: '44.0' },
+            // { os: 'Windows', os_version: '10',         browser: 'chrome',  browser_version: '48.0' },
+            // { os: 'OS X',    os_version: 'El Capitan', browser: 'safari',  browser_version: '9.0' },
+            // { os: 'OS X',    os_version: 'El Capitan', browser: 'firefox', browser_version: '44.0' },
+            { os: 'OS X',    os_version: 'El Capitan', browser: 'chrome',  browser_version: '48.0' }
             // SauceLabs-style...
-            // { platform: 'Windows 8.1', browserName: 'chrome',            version: '36' },
-            // { platform: 'Windows 8.1', browserName: 'firefox',           version: '31' },
-            // { platform: 'Windows 8.1', browserName: 'internet explorer', version: '11' },
-            // { platform: 'OS X 10.9',   browserName: 'safari',            version: '7' }
+            // { platform: 'Windows 10', browserName: 'internet explorer', version: '11' },
+            // { platform: 'Windows 10', browserName: 'firefox',           version: '44' },
+            // { platform: 'Windows 10', browserName: 'chrome',            version: '48' },
+            // { platform: 'OS X 10.11', browserName: 'safari',            version: '9' },
+            // { platform: 'OS X 10.11', browserName: 'firefox',           version: '44' },
+            // { platform: 'OS X 10.11', browserName: 'chrome',            version: '48' }
         ];
 
-        // test.maxConcurrency = 10;  // how many browsers may be open at once
-
-        // Specify which AMD module loader to use...
-        // test.useLoader = {
-
-        // };
-        // Options to pass to the AMD module loader...
-        // test.loader = {
-        //     packages: [
-        //         { name: 'unit', location: testDir + 'unit' },
-        //         { name: 'functional', location: testDir + 'functional' }
-        //     ]
-        // };
+        // How many browsers may be open at once.
+        config.maxConcurrency = 3;
 
         // Each cloud testing service has their own weird quirks and different APIs,
-        // so load up the necessary configuration to talk to them...
-        // test.tunnel = 'NullTunnel';         // no tunnel (default, if none provided)
-        test.tunnel = 'BrowserStackTunnel'; // BrowserStack
-        // test.tunnel = 'SauceLabsTunnel';    // SauceLabs
-        // test.tunnel = 'TestingBotTunnel';   // TestingBot
-        test.tunnelOptions = {
-            // host: '127.0.0.1:4447',  // custom location to find the selenium server
+        // so load up the necessary configuration to talk to them.
+        // config.tunnel = 'NullTunnel';         // no tunnel (default, if none provided)
+        config.tunnel = 'BrowserStackTunnel';
+        // config.tunnel = 'SauceLabsTunnel';
+        // config.tunnel = 'TestingBotTunnel';
+        config.tunnelOptions = {
+            // host: 'localhost:4447',  // custom location to find the selenium server
             // verbose: true            // more logging, only supported by BrowserStack
         };
 
-        // These are unit tests, which check the APIs of our application...
-        // test.suites = [
-        //     'test/unit/color'
+        // These are unit tests, which check the APIs of our app.
+        // config.suites = [
+        //     'test/unit/common'
         // ];
-        // These are functional tests, which check the user-facing behavior of our application...
-        // test.functionalSuites = [
+        // These are functional tests, which check the user-facing behavior of our app.
+        // config.functionalSuites = [
 
         // ];
 
-        // Any test IDs ("suite name - test name") which do NOT match this regex will be skipped...
-        // test.grep = /.*/;
+        // Test whitelist regex. Only test IDs ('suite name - test name')
+        // that match this pattern will run, all others will be skipped.
+        // config.grep = /.*/;
 
-        // The paths that match this regex will NOT be included in code coverage reports...
-        // test.excludeInstrumentation = /^(?:config|test|node_modules)\//;
+        // The paths that match this regex will NOT be included in code coverage reports.
+        // config.excludeInstrumentation = /^(?:config|test|node_modules)\//;
 
-        // Returns the modified settings...
-        return test;
+        // Provide the modified settings.
+        return config;
     }
 );
