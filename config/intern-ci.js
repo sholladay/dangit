@@ -19,14 +19,6 @@ define(
             /^.+?(?=\s)/, 'CI'
         );
 
-        // TODO: Remove this when we have functional tests.
-        config.functionalSuites = false;
-
-        config.reporters = [
-            // Log to the console for debugging.
-            { id : 'Runner' }
-        ];
-
         return config;
     }
 );

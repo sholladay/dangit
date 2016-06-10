@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = (grunt) => {
 
     'use strict';
 
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
                 bitwise       : true,      // disallow bitwise - helps avoid mistyped && statements
                 curly         : true,      // require curly braces when optional
                 eqeqeq        : true,      // require strict equality checks (=== vs ==)
-                es3           : true,      // adhere to EcmaScript 3 for old Internet Explorer
+                esversion     : 6,         // adhere to a specific EcmaScript version
                 freeze        : true,      // prohibit altering the prototype of native objects
                 immed         : true,      // IIFEs must be wrapped in parentheses (function(){}())
                 indent        : 4,         // NOT ENFORCED, intended spaces-per-tab for better error messages

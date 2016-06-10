@@ -4,9 +4,9 @@ define(
     [
         'intern!tdd',
         'intern/chai!assert',
-        'dangit/index.js'
+        'dangit'
     ],
-    function (tdd, assert, lib) {
+    function (tdd, assert, dangit) {
 
         'use strict';
 
@@ -30,7 +30,7 @@ define(
                 };
 
                 Object.keys(types).forEach((expected) => {
-                    const actual = whatis(types[expected]);
+                    const actual = dangit.whatis(types[expected]);
                     assert.strictEqual(actual, expected);
                 });
             });

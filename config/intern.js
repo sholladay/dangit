@@ -3,11 +3,11 @@
 
 define(
     [],
-    function () {
+    () => {
 
         'use strict';
 
-        var
+        const
             proxyPort = 9000,
             // This path is relative to baseUrl.
             testDir = 'test/',
@@ -17,8 +17,8 @@ define(
             FUNC_PKG = 'functional';
 
         return {
-            proxyPort : proxyPort,
-            proxyUrl  : 'http://localhost:' + proxyPort + '/',
+            proxyPort,
+            proxyUrl  : `http://localhost:${proxyPort}/`,
 
             // Places where unit and/or functional tests will be run.
             environments : [
@@ -29,31 +29,26 @@ define(
 
             maxConcurrency : 1,  // how many browsers may be open at once
 
-            // Specify which AMD module loader to use...
+            // Use a custom AMD module loader.
             // loaders : {
             //
             // },
-            // Options to pass to the AMD module loader...
+            // Configure the AMD module loader.
             loaderOptions : {
                 packages : [
-                    { name: 'dangit', location: 'lib' },
+                    { name: 'dangit', location: 'lib', main : 'index' },
                     { name: 'test', location: testDir },
                     { name: UNIT_PKG, location: testDir + 'unit' },
                     { name: FUNC_PKG, location: testDir + 'functional' },
-                    { name: 'page-object', location: testDir + 'page-object', main: 'index' },
-                    { name: 'utility', location: testDir + 'util', main: 'index' }
+                    { name: 'utility', location: testDir + 'util', main : 'index' }
                 ]
             },
 
-            // Each cloud testing service has their own weird quirks and different APIs,
-            // so load up the necessary configuration to talk to them...
-            tunnel : 'NullTunnel',         // no tunnel (default, if none provided)
-            // tunnel : 'BrowserStackTunnel', // BrowserStack
-            // tunnel : 'SauceLabsTunnel',    // SauceLabs
-            // tunnel : 'TestingBotTunnel',   // TestingBot
+            // The provider for a WebDriver server.
+            // tunnel : 'NullTunnel',  // no tunnel (default, if none provided)
+
             tunnelOptions : {
                 host : 'localhost:4447'  // custom location to find the selenium server
-                // verbose : true           // more logging, only supported by BrowserStack
             },
 
             // Which unit test suite files to load. These check our APIs.
