@@ -27,7 +27,8 @@ define(
                 { browserName : 'chrome' }
             ],
 
-            maxConcurrency : 1,  // how many browsers may be open at once
+            // How many browsers may be open at once.
+            maxConcurrency : 1,
 
             // Use a custom AMD module loader.
             // loaders : {
@@ -36,11 +37,11 @@ define(
             // Configure the AMD module loader.
             loaderOptions : {
                 packages : [
-                    { name: 'dangit', location: 'lib', main : 'index' },
-                    { name: 'test', location: testDir },
-                    { name: UNIT_PKG, location: testDir + 'unit' },
-                    { name: FUNC_PKG, location: testDir + 'functional' },
-                    { name: 'utility', location: testDir + 'util', main : 'index' }
+                    { name: 'dangit',   location: 'lib', main : 'index' },
+                    { name : 'test',    location: testDir },
+                    { name : UNIT_PKG,  location: testDir + 'unit' },
+                    { name : FUNC_PKG,  location: testDir + 'functional' },
+                    { name : 'utility', location: testDir + 'util',        main : 'index' }
                 ]
             },
 
@@ -85,4 +86,3 @@ define(
         };
     }
 );
-

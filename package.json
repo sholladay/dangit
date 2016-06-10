@@ -36,11 +36,11 @@
     "grunt-contrib-clean": "1.0.0",
     "grunt-contrib-jshint": "1.0.0",
     "grunt-contrib-watch": "1.0.0",
-    "grunt-jscs": "1.2.0",
+    "grunt-jscs": "3.0.0",
     "grunt-jslint": "1.1.14",
-    "grunt-jsonlint": "1.0.7",
+    "grunt-jsonlint": "1.0.8",
     "grunt-selenium-webdriver": "0.2.482",
-    "intern": "3.2.2"
+    "intern": "3.2.3"
   },
   "keywords": [
     "js",
