@@ -185,12 +185,13 @@ module.exports = (grunt) => {
             }
         },
 
-        // Selenium configuration, used for the app's functional testing...
+        // Selenium configuration, used for the functional testing.
+        // This server is destroyed when grunt exits.
+        // You MUST chain this with other tasks.
         selenium_start : {
-            // NOTE: This server is destroyed when grunt exits.
-            // You MUST chain this with other tasks.
             options : {
-                port : 4447  // Override Selenium default of 4444, which is taken on OS X Server
+                // Override Selenium default of 4444, which is taken on OS X Server.
+                port : 4447
             }
         },
 
@@ -200,28 +201,24 @@ module.exports = (grunt) => {
                 config  : 'config/intern',  // path to the default testing framework config
                 runType : 'runner'          // 'runner' to run in a browser, 'client' for Node.js
             },
+            // Empty because it inherits task local options.
             normal : {
-                // empty target because it inherits task local options
+
             },
             cloud : {
                 options : {
                     config : 'config/intern-cloud'
                 }
-            },
-            ci : {
-                options : {
-                    config : 'config/intern-ci'
-                }
             }
         },
 
-        // Selenium configuration, used for the app's functional testing...
+        // Selenium configuration, used for the app's functional testing.
         selenium_stop : {
             options : { }
         },
 
         // Watch configuration, used for automatically executing
-        // tasks when saving app files during development...
+        // tasks when saving app files during development.
         watch : {
             files : ['**.*'],  // files to watch for changes
             tasks : ['lint']   // tasks to trigger when watched files change
@@ -251,7 +248,6 @@ module.exports = (grunt) => {
     grunt.registerTask('opinion', ['lint', 'jslint']);
     // Make a new task called 'test'.
     grunt.registerTask('test', ['selenium_start', 'intern:normal']);
-    grunt.registerTask('test-ci', ['selenium_start', 'intern:ci']);
 
     // Default task, will run if no task is specified.
     grunt.registerTask('default', ['clean', 'lint']);

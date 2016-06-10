@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "node node_modules/.bin/grunt test",
-    "test-ci": "node node_modules/.bin/grunt test-ci"
+    "test-cloud": "node node_modules/.bin/intern-runner config=config/intern-cloud",
+    "test-ci": "node node_modules/.bin/intern-runner config=config/intern-ci"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "lib": "./lib"
   },
   "files": [
+    "lib",
     "index.js"
   ],
   "devDependencies": {
