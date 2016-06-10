@@ -23,10 +23,12 @@ Get it into your program.
 const dangit = require('dangit');
 ```
 
-In a browser:
+In a browser, use an [AMD](https://addyosmani.com/writing-modular-js/) loader like [Alameda](https://github.com/requirejs/alameda).
 
 ```js
-const dangit = window.dangit;
+define(['dangit'], (dangit) => {
+
+});
 ```
 
 Retrieve the [true type](https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/ "Explanation of type checking in JavaScript and the internal class property.") of any input, as a lowercase string.
