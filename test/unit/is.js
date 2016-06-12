@@ -98,14 +98,14 @@ define(
                 assert.isFalse(isNative(() => {}));
                 assert.isFalse(isNative(new Function()));
                 assert.isFalse(isNative(function () {}));
-                assert.isFalse(isNative(function () {'native code'}));
-                assert.isFalse(isNative(function () {' native code '}));
-                assert.isFalse(isNative(function () { 'native code' }));
-                assert.isFalse(isNative(function () { ' native code ' }));
-                assert.isFalse(isNative(function () {'[native code]'}));
-                assert.isFalse(isNative(function () {' [native code] '}));
-                assert.isFalse(isNative(function () { '[native code]' }));
-                assert.isFalse(isNative(function () { ' [native code] ' }));
+                assert.isFalse(isNative(function () {'native code';}));
+                assert.isFalse(isNative(function () {' native code ';}));
+                assert.isFalse(isNative(function () { 'native code'; }));
+                assert.isFalse(isNative(function () { ' native code '; }));
+                assert.isFalse(isNative(function () {'[native code]';}));
+                assert.isFalse(isNative(function () {' [native code] ';}));
+                assert.isFalse(isNative(function () { '[native code]'; }));
+                assert.isFalse(isNative(function () { ' [native code] '; }));
                 assert.isFalse(isNative(function () {/*native code*/}));
                 assert.isFalse(isNative(function () {/* native code */}));
                 assert.isFalse(isNative(function () { /*native code*/ }));
@@ -180,6 +180,10 @@ define(
 
                 const {isTheGlobalObject} = dangit;
 
+                assert.isFalse(isTheGlobalObject('window'));
+                assert.isFalse(isTheGlobalObject('global'));
+                assert.isFalse(isTheGlobalObject(/window/));
+                assert.isFalse(isTheGlobalObject(/global/));
                 assert.isFalse(isTheGlobalObject({}));
                 assert.isFalse(isTheGlobalObject(imposter));
                 assert.isFalse(isTheGlobalObject(function Window() {}));
@@ -194,10 +198,41 @@ define(
                 ));
             });
 
+            test('.isSpeechSynthesisUtterace() knows if input is an utterance', function () {
+
+                const utterance = typeof SpeechSynthesisUtterance === 'function' ?
+                    new SpeechSynthesisUtterance() :
+                    '';
+
+                const imposter = {
+                    addEventListener    : utterance.addEventListener,
+                    removeEventListener : utterance.removeEventListener,
+                    lang                : utterance.lang,
+                    pitch               : utterance.pitch,
+                    rate                : utterance.rate,
+                    text                : utterance.text,
+                    volume              : utterance.volume
+                };
+
+                const {isSpeechSynthesisUtterace} = dangit;
+
+                assert.isFalse(isSpeechSynthesisUtterace('speechsynthesisutterace'));
+                assert.isFalse(isSpeechSynthesisUtterace(/speechsynthesisutterace/));
+                assert.isFalse(isSpeechSynthesisUtterace({}));
+                assert.isFalse(isSpeechSynthesisUtterace(imposter));
+                assert.isFalse(isSpeechSynthesisUtterace(function SpeechSynthesisUtterace() {}));
+
+                if (utterance) {
+                    assert.isTrue(isSpeechSynthesisUtterace(utterance));
+                }
+            });
+
             test('.isFunction() knows if input is a function', function () {
 
                 const {isFunction} = dangit;
 
+                assert.isFalse(isFunction('function'));
+                assert.isFalse(isFunction(/function/));
                 assert.isFalse(isFunction({}));
                 assert.isFalse(isFunction(1));
                 assert.isFalse(isFunction(``));
@@ -208,17 +243,19 @@ define(
                 assert.isTrue(isFunction(function () {}));
                 assert.isTrue(isFunction(function * () {}));
                 assert.isTrue(isFunction(() => {}));
+                assert.isTrue(isFunction(new Function()));
             });
 
             test('.isPlainObject() knows if input is a plain object', function () {
 
                 const {isPlainObject} = dangit;
 
+                assert.isFalse(isPlainObject('object'));
+                assert.isFalse(isPlainObject(/object/));
                 assert.isFalse(isPlainObject(1));
                 assert.isFalse(isPlainObject(``));
                 assert.isFalse(isPlainObject([]));
-                assert.isFalse(isPlainObject(/foo/));
-                assert.isFalse(isPlainObject(function () {}));
+                assert.isFalse(isPlainObject(function Object() { return 'object'; }));
                 assert.isFalse(isPlainObject(Math));
                 assert.isFalse(isPlainObject(new Date()));
                 assert.isFalse(isPlainObject(Promise.resolve({})));
@@ -233,6 +270,8 @@ define(
 
                 const {isNull} = dangit;
 
+                assert.isFalse(isNull('null'));
+                assert.isFalse(isNull(/null/));
                 assert.isFalse(isNull(0));
                 assert.isFalse(isNull(undefined));
                 assert.isFalse(isNull(false));
@@ -249,10 +288,12 @@ define(
 
                 const {isRegExp} = dangit;
 
+                assert.isFalse(isRegExp('regexp'));
                 assert.isFalse(isRegExp(''));
                 assert.isFalse(isRegExp('^nah$'));
                 assert.isFalse(isRegExp('/^nope$/'));
-                assert.isFalse(isRegExp(function () { return /regexp/; }));
+                assert.isFalse(isRegExp({}));
+                assert.isFalse(isRegExp(function RegExp() { return /regexp/; }));
                 assert.isFalse(isRegExp([/sorry/]));
 
                 assert.isTrue(isRegExp(new RegExp()));
@@ -263,7 +304,10 @@ define(
 
                 const {isNumber} = dangit;
 
+                assert.isFalse(isNumber('number'));
+                assert.isFalse(isNumber(/number/));
                 assert.isFalse(isNumber(''));
+                assert.isFalse(isNumber({}));
                 assert.isFalse(isNumber('0'));
                 assert.isFalse(isNumber('1'));
                 assert.isFalse(isNumber(true));
@@ -274,6 +318,169 @@ define(
                 assert.isTrue(isNumber(0));
                 assert.isTrue(isNumber(1));
                 assert.isTrue(isNumber(new Number(1)));
+            });
+
+            test('.isDate() knows if input is a date', function () {
+
+                const {isDate} = dangit;
+
+                assert.isFalse(isDate('date'));
+                assert.isFalse(isDate(/date/));
+                assert.isFalse(isDate({}));
+                assert.isFalse(isDate(Date()));
+                assert.isFalse(isDate(Date.now()));
+                assert.isFalse(isDate(Date.now().toString()));
+                assert.isFalse(isDate(new Date().toISOString()));
+
+                assert.isTrue(isDate(new Date()));
+            });
+
+            test('.isMath() knows if input is Math', function () {
+
+                const imposter = {
+                    PI          : Math.PI,
+                    abs         : Math.abs,
+                    cos         : Math.cos,
+                    exp         : Math.exp,
+                    floor       : Math.floor,
+                    hypot       : Math.hypot,
+                    max         : Math.max,
+                    min         : Math.min,
+                    pow         : Math.pow,
+                    random      : Math.random,
+                    round       : Math.round,
+                    sign        : Math.sign,
+                    sqrt        : Math.sqrt
+                };
+
+                const {isMath} = dangit;
+
+                assert.isFalse(isMath(0));
+                assert.isFalse(isMath(1));
+                assert.isFalse(isMath('math'));
+                assert.isFalse(isMath(/math/));
+                assert.isFalse(isMath({}));
+                assert.isFalse(isMath(imposter));
+                assert.isFalse(isMath(function Math() {}));
+                assert.isFalse(isMath(function math() {}));
+
+                assert.isTrue(isMath(Math));
+            });
+
+            test('.isArray() knows if input is an array', function () {
+
+                const {isArray} = dangit;
+
+                assert.isFalse(isArray('array'));
+                assert.isFalse(isArray(/array/));
+                assert.isFalse(isArray({}));
+                assert.isFalse(isArray(function Array(a, b) { return a + b; }));
+                assert.isFalse(isArray(function array(a, b) { return a + b; }));
+                assert.isFalse(isArray(new Map([['a', 'b']])));
+                assert.isFalse(isArray(new Set(['a', 'b'])));
+
+                assert.isTrue(isArray([]));
+                assert.isTrue(isArray(['a', 'b']));
+                assert.isTrue(isArray(new Array()));
+                assert.isTrue(isArray(new Array('a', 'b')));
+            });
+
+            test('.isArrayish() knows if input is like a list', function () {
+
+                const {isArrayish} = dangit;
+
+                assert.isFalse(isArrayish('array'));
+                assert.isFalse(isArrayish(/array/));
+                assert.isFalse(isArrayish(function Array(a, b) { return a + b; }));
+                assert.isFalse(isArrayish(function array(a, b) { return a + b; }));
+                assert.isFalse(isArrayish(new Map([['a', 'b']])));
+                assert.isFalse(isArrayish(new Set(['a', 'b'])));
+
+                assert.isTrue(isArrayish({length : 0}));
+                assert.isTrue(isArrayish({length : 1}));
+                assert.isTrue(isArrayish([]));
+                assert.isTrue(isArrayish(['a', 'b']));
+                assert.isTrue(isArrayish(new Array()));
+                assert.isTrue(isArrayish(new Array('a', 'b')));
+            });
+
+            test('.isDeep() knows if input is like a list', function () {
+
+                function foo(a, b) { return a + b; }
+                foo.stuff = 'things';
+
+                const {isDeep} = dangit;
+
+                assert.isFalse(isDeep({}));
+                assert.isFalse(isDeep([]));
+                assert.isFalse(isDeep('array'));
+                assert.isFalse(isDeep(/array/));
+                assert.isFalse(isDeep(foo));
+                assert.isFalse(isDeep(function Array(a, b) { return a + b; }));
+                assert.isFalse(isDeep(function array(a, b) { return a + b; }));
+                assert.isFalse(isDeep(new Map([['a', 'b']])));
+                assert.isFalse(isDeep(new Set(['a', 'b'])));
+                assert.isFalse(isDeep({length : 0}));
+
+                assert.isTrue(isDeep({length : 1}));
+                assert.isTrue(isDeep({a : 0}));
+                assert.isTrue(isDeep([0]));
+                assert.isTrue(isDeep(new Array('foo')));
+            });
+
+            test('.isConsole() knows if input is a console', function () {
+
+                const imposter = {
+                    log     : console.log,
+                    info    : console.info,
+                    debug   : console.debug,
+                    warn    : console.warn,
+                    error   : console.error,
+                    trace   : console.trace,
+                    time    : console.time,
+                    timeEnd : console.timeEnd
+                };
+
+                const {isConsole} = dangit;
+
+                assert.isFalse(isConsole('console'));
+                assert.isFalse(isConsole(/console/));
+                assert.isFalse(isConsole({}));
+                assert.isFalse(isConsole(imposter));
+                assert.isFalse(isConsole(function Console() {}));
+                assert.isFalse(isConsole(function console() {}));
+
+                assert.isTrue(isConsole(console));
+            });
+
+            test('.isElement() knows if input is an utterance', function () {
+
+                const element = typeof document === 'object' && document ?
+                    document.createElement('div') :
+                    '';
+
+                const imposter = {
+                    ELEMENT_NODE        : element.ELEMENT_NODE,
+                    addEventListener    : element.addEventListener,
+                    removeEventListener : element.removeEventListener,
+                    children            : element.children,
+                    nodeType            : element.nodeType,
+                    nodeName            : element.nodeName,
+                    style               : element.style,
+                    ownerDocument       : element.ownerDocument
+                };
+
+                const {isElement} = dangit;
+
+                assert.isFalse(isElement('htmldivelement'));
+                assert.isFalse(isElement(/htmldivelement/));
+                assert.isFalse(isElement({}));
+                assert.isFalse(isElement(imposter));
+                assert.isFalse(isElement(function HTMLDivElement() { return 'htmldivelement'; }));
+
+                if (element) {
+                    assert.isTrue(isElement(element));
+                }
             });
         });
     }
