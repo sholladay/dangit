@@ -1,6 +1,6 @@
 # dangit [![Build status for dangit on Codeship.](https://img.shields.io/codeship/54787680-bd3b-0132-ea67-02fb30cbf240/master.svg "Codeship Build Status")](https://codeship.com/projects/72554 "Dangit Builds")
 
-> A utility library for random JavaScript quirks.
+> A utility library for JavaScript quirks.
 
 ## Why?
 

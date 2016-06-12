@@ -1,7 +1,7 @@
 {
   "name": "dangit",
   "version": "0.3.0",
-  "description": "A utility library for random JavaScript quirks.",
+  "description": "A utility library for JavaScript quirks.",
   "homepage": "https://github.com/sholladay/dangit",
   "main": "index.js",
   "author": {
