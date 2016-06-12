@@ -48,7 +48,7 @@ define(
 
             test('.whatis() has opt-out case normalization', function () {
 
-                const whatis = dangit.whatis;
+                const {whatis} = dangit;
 
                 assert.strictEqual(whatis(new Int8Array()), 'int8array');
                 assert.strictEqual(whatis(new Int8Array(), undefined), 'int8array');
@@ -56,9 +56,39 @@ define(
                 assert.strictEqual(whatis(new Int8Array(), false), 'Int8Array');
             });
 
+            test('.describe() returns valid patterns', function () {
+
+                // Here, the key is what we expect back from whatis()
+                // and the property value is the input.
+                const types = {
+                    'Null'       : null,
+                    'Undefined'  : undefined,
+                    'Boolean'    : false,
+                    'Number'     : 0,
+                    'Array'      : [],
+                    'Object'     : {},
+                    'String'     : 'hi',
+                    'Reg Exp'    : /foo/,
+                    'Function'   : () => {},
+                    'Promise'    : Promise.resolve(),
+                    'Math'       : Math,
+                    'Symbol'     : Symbol(),
+                    'Date'       : new Date(),
+                    'Map'        : new Map(),
+                    'Set'        : new Set(),
+                    'Error'      : new TypeError(),
+                    'Int8 Array' : new Int8Array()
+                };
+
+                Object.keys(types).forEach((expected) => {
+                    const actual = dangit.describe(types[expected]);
+                    assert.strictEqual(actual, expected);
+                });
+            });
+
             test('.isNative() knows if a function is native', function () {
 
-                const isNative = dangit.isNative;
+                const {isNative} = dangit;
 
                 assert.isUndefined(isNative(''));
                 assert.isUndefined(isNative({}));
@@ -109,6 +139,59 @@ define(
                 assert.isFalse(isNative(function () {
                     // [native code]
                 }));
+            });
+
+            test('.isTheGlobalObject() is environment agnostic', function () {
+
+                const imposter = {
+                    Infinity,
+                    NaN,
+                    undefined,
+                    Object,
+                    String,
+                    Number,
+                    Boolean,
+                    Function,
+                    Array,
+                    Symbol,
+                    Map,
+                    Set,
+                    WeakSet,
+                    RegExp,
+                    Promise,
+                    Reflect,
+                    Date,
+                    Error,
+                    Math,
+                    JSON,
+                    setTimeout,
+                    clearTimeout,
+                    setInterval,
+                    clearInterval,
+                    decodeURI,
+                    decodeURIComponent,
+                    encodeURI,
+                    encodeURIComponent,
+                    top    : typeof top === 'object' && top ? top : {},
+                    self   : typeof self === 'object' && self ? self : {},
+                    window : typeof window === 'object' && window ? window : {},
+                    global : typeof global === 'object' && global ? global : {}
+                };
+
+                const {isTheGlobalObject} = dangit;
+
+                assert.isFalse(isTheGlobalObject({}));
+                assert.isFalse(isTheGlobalObject(imposter));
+                assert.isFalse(isTheGlobalObject(function Window() {}));
+                assert.isFalse(isTheGlobalObject(function Global() {}));
+                assert.isFalse(isTheGlobalObject(function window() {}));
+                assert.isFalse(isTheGlobalObject(function global() {}));
+
+                assert.isTrue(isTheGlobalObject(
+                    typeof global === 'object' && global ? global :
+                    typeof window === 'object' && window ? window :
+                    false
+                ));
             });
         });
     }
