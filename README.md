@@ -135,15 +135,6 @@ input = document.querySelectorAll('a');
 dangit.isArrayish(input);  // => true, even though it is not a typical array
 ```
 
-Then you encounter some ES5 *interestingness* where properties [aren't allowed](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze "Documentation for Object.freeze(), which prevents most changes to an object.") to be modified. Eventually you discover `Object.isFrozen` which is supposed to help you plan for this, but it throws errors for half the input in the galaxy.
-
-```js
-const input = null;
-console.log(typeof input);  // => "object"
-Object.isFrozen(undefined)  // => Uncaught TypeError: Object.isFrozen called on non-object
-dangit.isFrozen()           // => false
-```
-
 After tooling up to process input, you'll come across situations where you need to provide defaults or keep track of state during asynchronous tasks. Do this by stamping a new object with a bunch of properties.
 
 ```js

@@ -141,7 +141,7 @@ define(
                 assert.isTrue(isNative(Function.prototype.apply));
             });
 
-            test('.isTheGlobalObject() is environment agnostic', function () {
+            test('.isTheGlobalObject() knows if input is the global object', function () {
 
                 const imposter = {
                     Infinity,
@@ -404,7 +404,7 @@ define(
                 assert.isTrue(isArrayish(new Array('a', 'b')));
             });
 
-            test('.isDeep() knows if input is like a list', function () {
+            test('.isDeep() knows if input has depth', function () {
 
                 function foo(a, b) { return a + b; }
                 foo.stuff = 'things';
@@ -453,7 +453,7 @@ define(
                 assert.isTrue(isConsole(console));
             });
 
-            test('.isElement() knows if input is an utterance', function () {
+            test('.isElement() knows if input is an element', function () {
 
                 const element = typeof document === 'object' && document ?
                     document.createElement('div') :
@@ -481,6 +481,124 @@ define(
                 if (element) {
                     assert.isTrue(isElement(element));
                 }
+            });
+
+            test('.isElementList() knows if input is an element list', function () {
+
+                const elementList = typeof document === 'object' && document ?
+                    document.querySelectorAll('*') :
+                    '';
+
+                const imposter = {
+                    item     : elementList.item,
+                    lemgth   : elementList.length,
+                };
+
+                const {isElementList} = dangit;
+
+                assert.isFalse(isElementList('nodelist'));
+                assert.isFalse(isElementList(/nodelist/));
+                assert.isFalse(isElementList(''));
+                assert.isFalse(isElementList({}));
+                assert.isFalse(isElementList({length : 0}));
+                assert.isFalse(isElementList({length : 1}));
+                assert.isFalse(isElementList({elem : imposter}));
+                assert.isFalse(isElementList([]));
+                assert.isFalse(isElementList([{}]));
+                assert.isFalse(isElementList(imposter));
+                assert.isFalse(isElementList([imposter]));
+                assert.isFalse(isElementList(function NodeList() { return 'nodelist'; }));
+
+                if (elementList) {
+                    assert.isTrue(isElementList(elementList));
+                }
+            });
+
+            test('.isExtendableType() knows if input is like an object', function () {
+
+                const {isExtendableType} = dangit;
+
+                assert.isFalse(isExtendableType(''));
+                assert.isFalse(isExtendableType('object'));
+                assert.isFalse(isExtendableType(0));
+                assert.isFalse(isExtendableType(1));
+                assert.isFalse(isExtendableType(undefined));
+                assert.isFalse(isExtendableType(false));
+                assert.isFalse(isExtendableType(true));
+                assert.isFalse(isExtendableType(NaN));
+
+                assert.isTrue(isExtendableType({}));
+                assert.isTrue(isExtendableType([]));
+                assert.isTrue(isExtendableType(/undefined/));
+                assert.isTrue(isExtendableType(function () {}));
+                assert.isTrue(isExtendableType(new Date()));
+            });
+
+            test('.toArray() returns a genuine array', function () {
+
+                const {toArray} = dangit;
+
+                assert.deepEqual(toArray(), []);
+                assert.deepEqual(toArray(''), ['']);
+                assert.deepEqual(toArray('object'), ['object']);
+                assert.deepEqual(toArray(0), [0]);
+                assert.deepEqual(toArray(1), [1]);
+                assert.deepEqual(toArray(undefined), [undefined]);
+                assert.deepEqual(toArray(false), [false]);
+                assert.deepEqual(toArray(true), [true]);
+                assert.deepEqual(toArray(NaN), [NaN]);
+                assert.deepEqual(toArray({}), [{}]);
+                assert.deepEqual(toArray([]), []);
+                assert.deepEqual(toArray(/undefined/), [/undefined/]);
+                const foo = (a, b) => { return a + b; };
+                assert.deepEqual(toArray(foo), [foo]);
+                (function () {
+                    assert.deepEqual(toArray(arguments), [99, 'red', ['balloons']]);
+                }(99, 'red', ['balloons']));
+                assert.deepEqual(toArray({0: 'a', 1: 'b', length: 2}), ['a', 'b']);
+                assert.deepEqual(
+                    toArray({0: 'a', length: 1}, {0: 'b', length: 1}, 'c', ['d']),
+                    ['a', 'b', 'c', 'd']
+                );
+            });
+
+            test('.flatten() returns a flat array', function () {
+
+                const {flatten} = dangit;
+
+                assert.deepEqual(flatten(), []);
+                assert.deepEqual(flatten(''), ['']);
+                assert.deepEqual(flatten('object'), ['object']);
+                assert.deepEqual(flatten(0), [0]);
+                assert.deepEqual(flatten(1), [1]);
+                assert.deepEqual(flatten(undefined), [undefined]);
+                assert.deepEqual(flatten(false), [false]);
+                assert.deepEqual(flatten(true), [true]);
+                assert.deepEqual(flatten(NaN), [NaN]);
+                assert.deepEqual(flatten({}), [{}]);
+                assert.deepEqual(flatten([]), []);
+                assert.deepEqual(flatten(/undefined/), [/undefined/]);
+                const foo = (a, b) => { return a + b; };
+                assert.deepEqual(flatten(foo), [foo]);
+                (function () {
+                    assert.deepEqual(flatten(arguments), [99, 'red', 'balloons']);
+                }(99, 'red', ['balloons']));
+                assert.deepEqual(flatten({0: 'a', 1: 'b', length: 2}), ['a', 'b']);
+                assert.deepEqual(
+                    flatten({0: 'a', length: 1}, {0: ['b', {0: [['c']], length: 1}], length: 1}, 'd', ['e']),
+                    ['a', 'b', 'c', 'd', 'e']
+                );
+            });
+
+            test('.getTheGlobalObject() is environment agnostic', function () {
+
+                const {getTheGlobalObject} = dangit;
+
+                assert.isExtensible(getTheGlobalObject());
+                assert.strictEqual(
+                    getTheGlobalObject(),
+                    typeof global === 'object' && global ? global : window
+                );
             });
         });
     }
