@@ -600,6 +600,62 @@ define(
                     typeof global === 'object' && global ? global : window
                 );
             });
+
+            test('.namespace() creates objects from dot paths', function () {
+
+                const {namespace} = dangit;
+
+                const
+                    base = {},
+                    ns = namespace(base, 'thing');
+                // The typeof here is to avoid a ReferenceError while also being
+                // agnostic to whether the global object is called 'window' or
+                // 'global' (browser vs Node.js)
+                assert.isTrue(
+                    typeof thing === 'undefined',
+                    'No unecessary creation of global variables'
+                );
+
+                assert.isObject(ns, 'Always end up with an object');
+                assert.isObject(base.thing, 'Make a namespace when it does not exist');
+                assert.strictEqual(ns, base.thing, 'Return the created object');
+
+                const ns2 = namespace(base, 'some.nested.field');
+                assert.isObject(ns2, 'Always end up with an object');
+                assert.strictEqual(ns2, base.some.nested.field, 'Create nested namespaces');
+
+                const ns3 = namespace(base, 'separate', 'fields');
+                assert.isObject(ns3, 'Always end up with an object');
+                assert.strictEqual(ns3, base.separate.fields);
+
+                const ns4 = namespace(base, 'separate.nested', 'fields');
+                assert.isObject(ns4, 'Always end up with an object');
+                assert.strictEqual(ns4, base.separate.nested.fields);
+
+                const ns5 = namespace(base, ['flattens.field'], 'lists');
+                assert.isObject(ns5, 'Always end up with an object');
+                assert.strictEqual(ns5, base.flattens.field.lists);
+
+                base.fn = function () {};
+                const ns6 = namespace(base, 'fn.foo');
+                assert.isFunction(base.fn, 'Keep objects if possible');
+                assert.isObject(ns6, 'Always end up with an object');
+                assert.strictEqual(ns6, base.fn.foo);
+
+                base.nope = false;
+                const ns7 = namespace(base, 'nope.blah');
+                assert.isObject(base.nope, 'Overwrite objects if necessary');
+                assert.isObject(ns7, 'Always end up with an object');
+                assert.strictEqual(ns7, base.nope.blah);
+
+                assert.throws(
+                    () => {
+                        namespace({ a : 1 });
+                    },
+                    TypeError,
+                    'Must throw when a namespace cannot be determined'
+                );
+            });
         });
     }
 );

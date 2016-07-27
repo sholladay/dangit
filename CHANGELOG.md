@@ -1,8 +1,10 @@
 # Change Log
+
 All notable changes to this project will be documented here.
 
- - **Added**      : New functionality or something very noteworthy.
- - **Changed**    : Updates to an existing system or feature.
+ - **Fixed**      : Bug fixes to align with expected behavior.
+ - **Added**      : New features.
+ - **Changed**    : Updates to expected behavior.
  - **Deprecated** : Planned for removal in the near future.
  - **Removed**    : Disabled or deleted within the source code.
 
@@ -10,59 +12,10 @@ All notable changes to this project will be documented here.
 ### Changed
  -
 
-## [0.2.3] - 2015-06-17
-### Removed
- - Engine metadata from package.json, since it is causing install headaches and npm 3 is shifting responsibility for preventing these issues to the user, anyway.
-
-## [0.2.2] - 2015-04-19
+## [0.3.1] - 2015-06-17
 ### Fixed
- - Simple comma mistakes. Better test coverage would have caught this.
-
-## [0.2.1] - 2015-04-19
-### Fixed
- - Simple mistake of not exporting the new helpers from `0.2.0`. Having each public API in its own file and doing a sanity check against the exports would have caught this.
-
-## [0.2.0] - 2015-04-19
-### Added
- - New helpers: `quote()`, `quoteTruthy()`
-
-## [0.1.2] - 2015-04-12
-### Added
- - New helpers: `join()`, `joinTruthy()`, `space()`, `spaceTruthy()`
- - Full support Node.js environments, without doing bad things.
-
-## [0.1.1] - 2015-04-04
-### Changed
- - Fixed the build status badge, which was using incorrect metadata.
-
-## 0.1.0 - 2015-04-04
-### Added
- - [package.json]    : Metadata about this application.
- - [index.js]        : The main entry point to this application.
- - [Gruntfile.js]    : Config for the build system.
- - [CHANGELOG.md]    : The bullet points of each release.
- - [CONTRIBUTING.md] : Rules and instructions for being involved in this project.
- - [README.md]       : Introduction and basic usage guide.
- - [LICENSE]         : The license this software is released under.
- - [.gitignore]      : Config for version control to ignore certain files.
- - [.gitattributes]  : Config for version control to manage line endings and more.
- - [.editorconfig]   : Config for editors to maintain styling rules.
+ - The `lib` directory went missing in the last publish to `npm`, probably due to [npm#5082](https://github.com/npm/npm/issues/5082). It should be there now.
 
 
-[Unreleased]:      https://github.com/sholladay/dangit/compare/v0.2.3...HEAD
-[0.2.3]:           https://github.com/sholladay/dangit/compare/v0.2.2...v0.2.3
-[0.2.2]:           https://github.com/sholladay/dangit/compare/v0.2.1...v0.2.2
-[0.2.1]:           https://github.com/sholladay/dangit/compare/v0.2.0...v0.2.1
-[0.2.0]:           https://github.com/sholladay/dangit/compare/v0.1.2...v0.2.0
-[0.1.2]:           https://github.com/sholladay/dangit/compare/v0.1.1...v0.1.2
-[0.1.1]:           https://github.com/sholladay/dangit/compare/v0.1.0...v0.1.1
-[package.json]:    http://wiki.commonjs.org/wiki/Packages/1.1
-[index.js]:        https://github.com/sholladay/dangit/blob/master/lib/index.js
-[Gruntfile.js]:    http://gruntjs.com/
-[CHANGELOG.md]:    http://keepachangelog.com/
-[CONTRIBUTING.md]: https://github.com/sholladay/dangit/blob/master/CONTRIBUTING.md
-[README.md]:       https://github.com/sholladay/dangit/blob/master/README.md
-[LICENSE]:         https://www.mozilla.org/MPL/2.0/
-[.gitignore]:      http://git-scm.com/docs/gitignore
-[.gitattributes]:  http://git-scm.com/docs/gitattributes
-[.editorconfig]:   http://editorconfig.org/
+[Unreleased]:  https://github.com/sholladay/dangit/compare/v0.3.0...HEAD
+[0.3.1]:       https://github.com/sholladay/dangit/compare/v0.3.0...v0.3.1
