@@ -1,49 +1,53 @@
 {
-  "name": "dangit",
-  "version": "0.3.1",
-  "description": "A utility library for JavaScript quirks.",
-  "homepage": "https://github.com/sholladay/dangit",
-  "main": "index.js",
-  "author": {
-    "name": "Seth Holladay",
-    "url": "http://seth-holladay.com",
-    "email": "me@seth-holladay.com"
-  },
-  "scripts": {
-    "test": "xo && intern-runner config=config/intern",
-    "test-cloud": "xo && intern-runner config=config/intern-cloud",
-    "test-ci": "xo && intern-runner config=config/intern-ci"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:sholladay/dangit.git"
-  },
-  "bugs": {
-    "url": "https://github.com/sholladay/dangit/issues",
-    "email": "me@seth-holladay.com"
-  },
-  "license": "MPL-2.0",
-  "directories": {
-    "lib": "./lib"
-  },
-  "files": [
-    "lib",
-    "index.js"
-  ],
-  "devDependencies": {
-    "eslint-config-tidy": "^0.5.0",
-    "intern": "^3.2.3",
-    "xo": "^0.18.2"
-  },
-  "keywords": [
-    "js",
-    "type",
-    "check",
-    "quirk",
-    "utility",
-    "library"
-  ],
-  "xo": {
-    "extend": "tidy"
-  }
+    "name": "dangit",
+    "version": "0.3.1",
+    "description": "A utility library for JavaScript quirks",
+    "homepage": "https://github.com/sholladay/dangit",
+    "main": "index.js",
+    "author": {
+        "name": "Seth Holladay",
+        "url": "https://seth-holladay.com",
+        "email": "me@seth-holladay.com"
+    },
+    "scripts": {
+        "test": "xo && intern-runner config=config/intern",
+        "test-cloud": "xo && intern-runner config=config/intern-cloud",
+        "test-ci": "xo && intern-runner config=config/intern-ci"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:sholladay/dangit.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sholladay/dangit/issues",
+        "email": "me@seth-holladay.com"
+    },
+    "license": "MPL-2.0",
+    "files": [
+        "lib",
+        "index.js"
+    ],
+    "devDependencies": {
+        "eslint-config-tidy": "^0.5.0",
+        "intern": "^3.2.3",
+        "xo": "^0.18.2"
+    },
+    "keywords": [
+        "lodash",
+        "underscore",
+        "js",
+        "type",
+        "validate",
+        "check",
+        "quirk",
+        "quirks",
+        "utility",
+        "library"
+    ],
+    "xo": {
+        "extend": "tidy",
+        "env": [
+            "browser"
+        ]
+    }
 }
