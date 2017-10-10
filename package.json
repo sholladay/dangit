@@ -10,9 +10,9 @@
     "email": "me@seth-holladay.com"
   },
   "scripts": {
-    "test": "node node_modules/.bin/grunt test",
-    "test-cloud": "node node_modules/.bin/intern-runner config=config/intern-cloud",
-    "test-ci": "node node_modules/.bin/intern-runner config=config/intern-ci"
+    "test": "xo && grunt test",
+    "test-cloud": "intern-runner config=config/intern-cloud",
+    "test-ci": "intern-runner config=config/intern-ci"
   },
   "repository": {
     "type": "git",
@@ -31,16 +31,13 @@
     "index.js"
   ],
   "devDependencies": {
-    "grunt": "1.0.1",
-    "grunt-cli": "1.2.0",
-    "grunt-contrib-clean": "1.0.0",
-    "grunt-contrib-jshint": "1.0.0",
-    "grunt-contrib-watch": "1.0.0",
-    "grunt-jscs": "3.0.0",
-    "grunt-jslint": "1.1.14",
-    "grunt-jsonlint": "1.0.8",
-    "grunt-selenium-webdriver": "0.2.482",
-    "intern": "3.2.3"
+    "eslint-config-tidy": "^0.5.0",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-selenium-webdriver": "^0.2.482",
+    "intern": "^3.2.3",
+    "xo": "^0.18.2"
   },
   "keywords": [
     "js",
@@ -49,5 +46,8 @@
     "quirk",
     "utility",
     "library"
-  ]
+  ],
+  "xo": {
+    "extend": "tidy"
+  }
 }
