@@ -16,23 +16,23 @@ define(
                 // Here, the key is what we expect back from whatis()
                 // and the property value is the input.
                 const types = {
-                    'null'      : null,
-                    'undefined' : undefined,
-                    'boolean'   : false,
-                    'number'    : 0,
-                    'array'     : [],
-                    'object'    : {},
-                    'string'    : 'hi',
-                    'regexp'    : /foo/,
-                    'function'  : () => {},
-                    'promise'   : Promise.resolve(),
-                    'math'      : Math,
-                    'symbol'    : Symbol(),
-                    'date'      : new Date(),
-                    'map'       : new Map(),
-                    'set'       : new Set(),
-                    'error'     : new TypeError(),
-                    'int8array' : new Int8Array()
+                    null      : null,
+                    undefined : undefined,
+                    boolean   : false,
+                    number    : 0,
+                    array     : [],
+                    object    : {},
+                    string    : 'hi',
+                    regexp    : /foo/,
+                    function  : () => {},
+                    promise   : Promise.resolve(),
+                    math      : Math,
+                    symbol    : Symbol(),
+                    date      : new Date(),
+                    map       : new Map(),
+                    set       : new Set(),
+                    error     : new TypeError(),
+                    int8array : new Int8Array()
                 };
 
                 Object.keys(types).forEach((expected) => {
@@ -54,22 +54,22 @@ define(
                 // Here, the key is what we expect back from whatis()
                 // and the property value is the input.
                 const types = {
-                    'Null'       : null,
-                    'Undefined'  : undefined,
-                    'Boolean'    : false,
-                    'Number'     : 0,
-                    'Array'      : [],
-                    'Object'     : {},
-                    'String'     : 'hi',
+                    Null         : null,
+                    Undefined    : undefined,
+                    Boolean      : false,
+                    Number       : 0,
+                    Array        : [],
+                    Object       : {},
+                    String       : 'hi',
                     'Reg Exp'    : /foo/,
-                    'Function'   : () => {},
-                    'Promise'    : Promise.resolve(),
-                    'Math'       : Math,
-                    'Symbol'     : Symbol(),
-                    'Date'       : new Date(),
-                    'Map'        : new Map(),
-                    'Set'        : new Set(),
-                    'Error'      : new TypeError(),
+                    Function     : () => {},
+                    Promise      : Promise.resolve(),
+                    Math,
+                    Symbol       : Symbol('symbol'),
+                    Date         : new Date(),
+                    Map          : new Map(),
+                    Set          : new Set(),
+                    Error        : new TypeError(),
                     'Int8 Array' : new Int8Array()
                 };
 
@@ -227,7 +227,7 @@ define(
                 assert.isFalse(isFunction(``));
                 assert.isFalse(isFunction(Math));
                 assert.isFalse(isFunction(Reflect));
-                assert.isFalse(isFunction({foo : function () {}}));
+                assert.isFalse(isFunction({ foo : function () {} }));
 
                 assert.isTrue(isFunction(function () {}));
                 assert.isTrue(isFunction(function * () {}));
@@ -279,7 +279,8 @@ define(
                 assert.isFalse(isRegExp('^nah$'));
                 assert.isFalse(isRegExp('/^nope$/'));
                 assert.isFalse(isRegExp({}));
-                assert.isFalse(isRegExp(function RegExp() { return /regexp/; }));
+                assert.isFalse(isRegExp(RegExp));
+                assert.isFalse(isRegExp(function regexp() { /**/ }));
                 assert.isFalse(isRegExp([/sorry/]));
 
                 assert.isTrue(isRegExp(new RegExp()));
@@ -344,8 +345,7 @@ define(
                 assert.isFalse(isMath(/math/));
                 assert.isFalse(isMath({}));
                 assert.isFalse(isMath(imposter));
-                assert.isFalse(isMath(function Math() {}));
-                assert.isFalse(isMath(function math() {}));
+                assert.isFalse(isMath(function math() { /**/ }));
 
                 assert.isTrue(isMath(Math));
             });
@@ -356,8 +356,10 @@ define(
                 assert.isFalse(isArray('array'));
                 assert.isFalse(isArray(/array/));
                 assert.isFalse(isArray({}));
-                assert.isFalse(isArray(function Array(a, b) { return a + b; }));
-                assert.isFalse(isArray(function array(a, b) { return a + b; }));
+                assert.isFalse(isArray(Array));
+                assert.isFalse(isArray(function array(a, b) {
+                    return a + b;
+                }));
                 assert.isFalse(isArray(new Map([['a', 'b']])));
                 assert.isFalse(isArray(new Set(['a', 'b'])));
 
@@ -372,8 +374,9 @@ define(
 
                 assert.isFalse(isArrayish('array'));
                 assert.isFalse(isArrayish(/array/));
-                assert.isFalse(isArrayish(function Array(a, b) { return a + b; }));
-                assert.isFalse(isArrayish(function array(a, b) { return a + b; }));
+                assert.isFalse(isArrayish({}));
+                assert.isFalse(isArrayish(Array));
+                assert.isFalse(isArrayish(function array(a, b) { /**/ }));
                 assert.isFalse(isArrayish(new Map([['a', 'b']])));
                 assert.isFalse(isArrayish(new Set(['a', 'b'])));
 
@@ -386,7 +389,9 @@ define(
             });
 
             test('.isDeep() knows if input has depth', function () {
-                function foo(a, b) { return a + b; }
+                function foo(a, b) {
+                    return a + b;
+                }
                 foo.stuff = 'things';
 
                 const { isDeep } = dangit;
@@ -396,8 +401,9 @@ define(
                 assert.isFalse(isDeep('array'));
                 assert.isFalse(isDeep(/array/));
                 assert.isFalse(isDeep(foo));
-                assert.isFalse(isDeep(function Array(a, b) { return a + b; }));
-                assert.isFalse(isDeep(function array(a, b) { return a + b; }));
+                assert.isFalse(isDeep(function array(a, b) {
+                    return a + b;
+                }));
                 assert.isFalse(isDeep(new Map([['a', 'b']])));
                 assert.isFalse(isDeep(new Set(['a', 'b'])));
                 assert.isFalse(isDeep({ length : 0 }));
@@ -426,8 +432,12 @@ define(
                 assert.isFalse(isConsole(/console/));
                 assert.isFalse(isConsole({}));
                 assert.isFalse(isConsole(imposter));
-                assert.isFalse(isConsole(function Console() {}));
-                assert.isFalse(isConsole(function console() {}));
+                assert.isFalse(isConsole(function Console() {
+                    return 'Console';
+                }));
+                assert.isFalse(isConsole(function console() {
+                    return 'console';
+                }));
 
                 assert.isTrue(isConsole(console));
             });
@@ -468,7 +478,7 @@ define(
 
                 const imposter = {
                     item     : elementList.item,
-                    lemgth   : elementList.length,
+                    lemgth   : elementList.length
                 };
 
                 const { isElementList } = dangit;
@@ -484,7 +494,9 @@ define(
                 assert.isFalse(isElementList([{}]));
                 assert.isFalse(isElementList(imposter));
                 assert.isFalse(isElementList([imposter]));
-                assert.isFalse(isElementList(function NodeList() { return 'nodelist'; }));
+                assert.isFalse(isElementList(function NodeList() {
+                    return 'nodelist';
+                }));
 
                 if (elementList) {
                     assert.isTrue(isElementList(elementList));
@@ -506,7 +518,7 @@ define(
                 assert.isTrue(isExtendableType({}));
                 assert.isTrue(isExtendableType([]));
                 assert.isTrue(isExtendableType(/undefined/));
-                assert.isTrue(isExtendableType(function () {}));
+                assert.isTrue(isExtendableType(function ( /**/ ) {}));
                 assert.isTrue(isExtendableType(new Date()));
             });
 
@@ -525,14 +537,21 @@ define(
                 assert.deepEqual(flatten({}), [{}]);
                 assert.deepEqual(flatten([]), []);
                 assert.deepEqual(flatten(/undefined/), [/undefined/]);
-                const foo = (a, b) => { return a + b; };
+                const foo = (a, b) => {
+                    return a + b;
+                };
                 assert.deepEqual(flatten(foo), [foo]);
                 (function () {
                     assert.deepEqual(flatten(arguments), [99, 'red', 'balloons']);
                 }(99, 'red', ['balloons']));
                 assert.deepEqual(flatten({ 0 : 'a', 1 : 'b', length : 2 }), ['a', 'b']);
                 assert.deepEqual(
-                    flatten({ 0 : 'a', length : 1 }, { 0 : ['b', { 0 : [['c']], length : 1 }], length : 1 }, 'd', ['e']),
+                    flatten(
+                        { 0 : 'a', length : 1 },
+                        { 0 : ['b', { 0 : [['c']], length : 1 }], length : 1 },
+                        'd',
+                        ['e']
+                    ),
                     ['a', 'b', 'c', 'd', 'e']
                 );
             });

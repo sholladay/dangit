@@ -10,9 +10,9 @@
     "email": "me@seth-holladay.com"
   },
   "scripts": {
-    "test": "xo && grunt test",
-    "test-cloud": "intern-runner config=config/intern-cloud",
-    "test-ci": "intern-runner config=config/intern-ci"
+    "test": "xo && intern-runner config=config/intern",
+    "test-cloud": "xo && intern-runner config=config/intern-cloud",
+    "test-ci": "xo && intern-runner config=config/intern-ci"
   },
   "repository": {
     "type": "git",
@@ -32,10 +32,6 @@
   ],
   "devDependencies": {
     "eslint-config-tidy": "^0.5.0",
-    "grunt": "^1.0.1",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-selenium-webdriver": "^0.2.482",
     "intern": "^3.2.3",
     "xo": "^0.18.2"
   },

@@ -6,13 +6,12 @@ define(
         './intern',  // base configuration
         'intern/dojo/text!../package.json'
     ],
-    function (intern, config, pkgStr) {
-
+    (intern, config, pkgStr) => {
         'use strict';
 
-        var pkg = JSON.parse(pkgStr),
-            appName = pkg.name,
-            build = intern.args.build || pkg.version || 'UNKNOWN';
+        const pkg = JSON.parse(pkgStr);
+        const appName = pkg.name;
+        const build = intern.args.build || pkg.version || 'UNKNOWN';
 
         // Setting properties on the config object here overrides the base configuration.
         // Best practice is to set only what needs to be different.
@@ -55,10 +54,9 @@ define(
         config.tunnel = 'BrowserStackTunnel';
         // config.tunnel = 'SauceLabsTunnel';
         // config.tunnel = 'TestingBotTunnel';
-        config.tunnelOptions = {
-            // host    : 'localhost:4447',  // custom location to find the selenium server
-            // verbose : true               // more logging, only supported by BrowserStack
-        };
+        // config.tunnelOptions = {
+        //     verbose : true               // more logging, only supported by BrowserStack
+        // };
 
         // These are unit tests, which check the APIs of our app.
         // config.suites = [

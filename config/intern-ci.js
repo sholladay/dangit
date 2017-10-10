@@ -5,8 +5,7 @@ define(
         // Base configuration.
         './intern-cloud'
     ],
-    function (config) {
-
+    (config) => {
         'use strict';
 
         // Setting properties on the config object here overrides the base configuration.
