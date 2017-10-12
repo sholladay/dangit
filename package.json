@@ -3,13 +3,18 @@
     "version": "0.3.1",
     "description": "A utility library for JavaScript quirks",
     "homepage": "https://github.com/sholladay/dangit",
-    "main": "index.js",
+    "main": "build/dangit.cjs.js",
+    "module": "build/dangit.esm.js",
+    "browser": "build/dangit.umd.js",
     "author": {
         "name": "Seth Holladay",
         "url": "https://seth-holladay.com",
         "email": "me@seth-holladay.com"
     },
     "scripts": {
+        "build": "rollup --config",
+        "dev": "rollup --config --watch",
+        "pretest": "npm run build",
         "test": "xo && intern-runner config=config/intern",
         "test-cloud": "xo && intern-runner config=config/intern-cloud",
         "test-ci": "xo && intern-runner config=config/intern-ci"
@@ -24,11 +29,12 @@
     },
     "license": "MPL-2.0",
     "files": [
-        "index.js"
+        "build"
     ],
     "devDependencies": {
         "eslint-config-tidy": "^0.5.0",
         "intern": "^3.2.3",
+        "rollup": "^0.50.0",
         "xo": "^0.18.2"
     },
     "keywords": [

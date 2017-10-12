@@ -33,7 +33,7 @@ define(() => {
         // Configure the AMD module loader.
         loaderOptions : {
             packages : [
-                { name: 'dangit',   location: '.', main : 'index' },
+                { name: 'dangit',   location: 'build', main : 'dangit.umd' },
                 { name : 'test',    location: testDir },
                 { name : UNIT_PKG,  location: testDir + 'unit' },
                 { name : FUNC_PKG,  location: testDir + 'functional' },
