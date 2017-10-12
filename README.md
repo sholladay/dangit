@@ -187,6 +187,90 @@ makeUrl('steve', 'img', 'funny.jpg');  // => '//mysite.com/steve/img/funny.jpg'
 makeUrl('jane', false, 'config.js');  // => '//mysite.com/jane/config.js'
 ```
 
+## API
+
+### whatis(target)
+
+Returns the internal class of the `target` argument. Commonly used for `whatis(foo) === 'null'` (but see `isNull()` for that).
+
+### describe(target)
+
+### isNative(fn)
+
+Returns a `boolean` for whether `fn` is a native function.
+
+### isTheGlobalObject(target)
+
+Returns a `boolean` for whether `target` is the global object (i.e. `window` in browsers).
+
+### isSpeechSynthesisUtterace(target)
+
+Returns a `boolean` for whether `target` is a speech utterance.
+
+### isFunction(target)
+
+Returns a `boolean` for whether `target` is a function.
+
+### isPlainObject(target)
+
+Returns a `boolean` for whether `target` is a plain object (i.e. not `null`).
+
+### isNull(target)
+
+Returns a `boolean` for whether `target` is `null`.
+
+### isRegExp(target)
+
+Returns a `boolean` for whether `target` is a regular expression.
+
+### isNumber(target)
+
+Returns a `boolean` for whether `target` is a number (including `NaN`, in accordance with the `typeof` keyword).
+
+### isDate(target)
+
+Returns a `boolean` for whether `target` is a date.
+
+### isMath()
+
+### isConsole()
+
+### isElement()
+
+### isElementList()
+
+### isArray()
+
+### isArrayish()
+
+### isDeep()
+
+### isExtendableType()
+
+### flatten()
+
+### getTheGlobalObject()
+
+### namespace()
+
+### resetConsole()
+
+### stampObject()
+
+### checkStamp()
+
+### join()
+
+### joinTruthy()
+
+### space()
+
+### spaceTruthy()
+
+### quote()
+
+### quoteTruthy()
+
 ## Contributing
 
 See our [contributing guidelines](https://github.com/sholladay/dangit/blob/master/CONTRIBUTING.md "Guidelines for participating in this project") for more details.
