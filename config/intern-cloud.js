@@ -30,12 +30,12 @@ define(
         config.environments = [
             // BrowserStack-style...
             // Get latest: https://www.browserstack.com/automate/browsers.json
-            // { os: 'Windows', os_version: '10',         browser: 'edge',    browser_version: '13.0' },
-            { os: 'Windows', os_version: '10',         browser: 'firefox', browser_version: '46.0' },
-            { os: 'Windows', os_version: '10',         browser: 'chrome',  browser_version: '51.0' },
-            // { os: 'OS X',    os_version: 'El Capitan', browser: 'safari',  browser_version: '9.0' },
-            { os: 'OS X',    os_version: 'El Capitan', browser: 'firefox', browser_version: '46.0' },
-            { os: 'OS X',    os_version: 'El Capitan', browser: 'chrome',  browser_version: '51.0' }
+            // { os: 'Windows', os_version: '10',         browser: 'edge',    browser_version: '15.0' },
+            { os: 'Windows', os_version: '10',         browser: 'firefox', browser_version: '56.0' },
+            { os: 'Windows', os_version: '10',         browser: 'chrome',  browser_version: '61.0' },
+            // { os: 'OS X',    os_version: 'Sierra', browser: 'safari',  browser_version: '10.1' },
+            { os: 'OS X',    os_version: 'Sierra', browser: 'firefox', browser_version: '56.0' },
+            { os: 'OS X',    os_version: 'Sierra', browser: 'chrome',  browser_version: '61.0' }
             // SauceLabs-style...
             // { platform: 'Windows 10', browserName: 'MicrosoftEdge',     version: '13' },
             // { platform: 'Windows 10', browserName: 'firefox',           version: '44' },
