@@ -8,9 +8,9 @@ define(() => {
     // This path is relative to baseUrl.
     const testDir = 'test/';
     // Name of the alias to the unit suite directory.
-    const UNIT_PKG = 'unit';
+    const unitPkg = 'unit';
     // Name of the alias to the functional suite directory.
-    const FUNC_PKG = 'functional';
+    const funcPkg = 'functional';
 
     return {
         proxyPort,
@@ -33,10 +33,10 @@ define(() => {
         // Configure the AMD module loader.
         loaderOptions : {
             packages : [
-                { name: 'dangit',   location: 'build', main : 'dangit.umd' },
-                { name : 'test',    location: testDir },
-                { name : UNIT_PKG,  location: testDir + 'unit' },
-                { name : FUNC_PKG,  location: testDir + 'functional' },
+                { name : 'dangit',  location : 'build', main : 'dangit.umd' },
+                { name : 'test',    location : testDir },
+                { name : unitPkg,  location : testDir + 'unit' },
+                { name : funcPkg,  location : testDir + 'functional' }
             ]
         },
 
@@ -48,14 +48,14 @@ define(() => {
 
         // Which unit test suite files to load. These check our APIs.
         suites : [
-            UNIT_PKG + '/**/*.js'
+            unitPkg + '/**/*.js'
         ],
         // Which functional test suite files to load. These check our
         // user-facing behavior.
         // TODO: Re-enable when we have functional tests.
         functionalSuites : false,
         // functionalSuites : [
-        //     FUNC_PKG + '/**/*.js'
+        //     funcPkg + '/**/*.js'
         // ],
 
         // Test whitelist regex. Only test IDs ('suite name - test name')

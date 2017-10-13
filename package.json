@@ -16,8 +16,8 @@
         "dev": "rollup --config --watch",
         "pretest": "npm run build",
         "test": "xo && intern-runner config=config/intern",
-        "test-cloud": "xo && intern-runner config=config/intern-cloud",
-        "test-ci": "xo && intern-runner config=config/intern-ci"
+        "test-cloud": "npm run build && xo && intern-runner config=config/intern-cloud",
+        "test-ci": "npm run build && xo && intern-runner config=config/intern-ci"
     },
     "repository": {
         "type": "git",
@@ -53,6 +53,20 @@
         "extend": "tidy",
         "env": [
             "browser"
+        ],
+        "ignore": "test/**/*.js",
+        "overrides": [
+            {
+                "files": "config/**/*.js",
+                "env": "amd",
+                "rules": {
+                    "camelcase": "off",
+                    "capitalized-comments": "off",
+                    "import/no-amd": "off",
+                    "no-multi-spaces": "off",
+                    "object-property-newline": "off"
+                }
+            }
         ]
     }
 }

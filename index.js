@@ -1,19 +1,8 @@
-// Get the true type / class of an object, to workaround reliability
-// problems with typeof and instanceof.
+// Get the real type of an object to workaround reliability issues with typeof and instanceof.
 const whatis = (obj, lowerCase) => {
-    // Step 1: Grab the purest toString method we can and call it with the
-    //         passed-in object used as its internal 'this' reference.
-    // Step 2: Take the string, which should look like '[object Whatever]'
-    //         and extract only characters after the first space.
-    // Step 3: Take the string, which should now be the object's true type
-    //         and normalize it to lower case, if desired.
-    let result = Object.prototype.toString.call(obj).match(/ (.+?)]/)[1];
-
-    if (lowerCase || typeof lowerCase === 'undefined') {
-        result = result.toLowerCase();
-    }
-
-    return result;
+    // Using the safest toString possible, get the object type from the '[object Foo]' string.
+    const type = Object.prototype.toString.call(obj).match(/ (.+?)]/)[1];
+    return (lowerCase || typeof lowerCase === 'undefined') ? type.toLowerCase() : type;
 };
 
 // Get a human friendly version of an object's class.
@@ -21,102 +10,54 @@ const describe = (obj) => {
     return whatis(obj, false).replace(/(?=[A-Z][a-z])/g, ' ').trimLeft();
 };
 
-// Check if a function is native, which is useful to ensure that an
-// API like console.log has not been overwritten.
+// Check if a function (e.g. console.log) has been modified. Sadly, this only works on functions.
 const isNative = (context) => {
-    // The trick we use to determine if the input is native
-    // only works on functions.
     if (typeof context !== 'function') {
         return;
     }
-
-    // Grab the purest toString method we can, and call it with the desired
-    // context used as its internal 'this' reference. The regex takes into
-    // account browser quirks which output the string differently.
-
-    // A previous, less strict version.
-    // /^\s*?function(?:\s+?.*?|\s*?)\(.*?\)\s*?\{\s*?\[native\s*?code\]/i
+    // Using the safest toString possible, look for 'native code' in a way that's hard to fool.
+    // The regex takes into account browser quirks that output the string differently.
     return /^function .*?\(.*?\)\s*?\{\s*?\[native code\]/.test(
         Function.prototype.toString.call(context)
     );
 };
 
 const isTheGlobalObject = (obj) => {
-    const objType = whatis(obj);
     // Chrome, Opera, Node.js say 'global' ... IE, FF, Safari, others say 'window'
-    return objType === 'global' || objType === 'window';
+    return ['global', 'window'].includes(whatis(obj));
 };
 
-const isSpeechSynthesisUtterace = (obj) => {
-    return whatis(obj) === 'speechsynthesisutterance';
+const checkType = (type) => {
+    return (obj) => {
+        return whatis(obj) === type;
+    };
 };
 
-const isFunction = (obj) => {
-    return typeof obj === 'function';
-};
-
-const isPlainObject = (obj) => {
-    return whatis(obj) === 'object';
-};
-
-const isNull = (obj) => {
-    return whatis(obj) === 'null';
-};
-
-const isRegExp = (obj) => {
-    return whatis(obj) === 'regexp';
-};
-
-const isNumber = (obj) => {
-    return whatis(obj) === 'number';
-};
-
-const isDate = (obj) => {
-    return whatis(obj) === 'date';
-};
-
-const isMath = (obj) => {
-    return whatis(obj) === 'math';
-};
-
-const isArray = (obj) => {
-    return whatis(obj) === 'array';
-};
-
+const isSpeechSynthesisUtterace = checkType('speechsynthesisutterance');
+const isPlainObject = checkType('object');
+const isNull = checkType('null');
+const isRegExp = checkType('regexp');
+const isNumber = checkType('number');
+const isDate = checkType('date');
+const isMath = checkType('math');
+const isArray = checkType('array');
 const isArrayish = (obj) => {
     return Boolean(obj) && typeof obj === 'object' && typeof obj.length === 'number';
 };
-
-// Determines if an object has depth, as in whether or not
-// it contains something.
-const isDeep = (obj) => {
-    if (isArrayish(obj)) {
-        // If it's array-like, only consider the proclaimed length...
-        return obj.length > 0;
-    }
-    else if (obj && typeof obj === 'object') {
-        // For everything else, consider all enumerable properties...
-        return Object.keys(obj).length > 0;
-    }
-
-    return false;
+const isFunction = (obj) => {
+    return typeof obj === 'function';
 };
-
 const isConsole = (obj) => {
     // Unfortunately, Chrome returns 'object' instead of 'console'
     return whatis(obj) === 'console' || obj === console;
 };
-
-// Determine whether an object is a DOM element, in a much more robust way
-// than standard (quack!) techiques.
+// Determine if an object is a DOM elemen. More robust than duck typing.
 const isElement = (obj) => {
     return /html\w+element/.test(whatis(obj));
 };
-
 const isElementList = (obj) => {
     const objType = whatis(obj);
 
-    // No matter what, it has to be truthy.
     if (!obj) {
         return false;
     }
@@ -124,19 +65,22 @@ const isElementList = (obj) => {
         return true;
     }
     if (isArrayish(obj)) {
-        return (obj.length > 0) && Array.from(obj).every((value) => {
-            return isElement(value);
-        });
+        return (obj.length > 0) && Array.from(obj).every(isElement);
     }
     const values = Object.values(obj);
-    return typeof obj === 'object' && values.length > 0 && values.every((value) => {
-        return isElement(value);
-    });
+    return typeof obj === 'object' && values.length > 0 && values.every(isElement);
 };
 
 // Determine if it would make sense to add a property to an object.
 const isExtendableType = (obj) => {
     return Boolean(obj) && ['object', 'function'].includes(typeof obj);
+};
+
+// Determine if an object has depth, as in whether or not it contains something.
+const isDeep = (obj) => {
+    return isArrayish(obj) ?
+        obj.length > 0 :
+        Boolean(obj) && typeof obj === 'object' && Object.keys(obj).length > 0;
 };
 
 // Deep copy all arguments into a new, single-level array.
@@ -146,13 +90,9 @@ const flatten = (...queue) => {
     while (queue.length > 0) {
         // Get and remove the first value from the queue.
         const item = queue.shift();
-
         if (isArrayish(item)) {
-            let i = item.length;
-            // If the array is non-empty, do a reverse loop.
-            while (i--) {
-                // Add the array's children to the beginning of the queue
-                // to keep their order intact.
+            // Add the array's children to the start of the queue to keep their order intact.
+            for (let i = item.length - 1; i >= 0; i -= 1) {
                 queue.unshift(item[i]);
             }
         }
@@ -164,8 +104,6 @@ const flatten = (...queue) => {
 
     return result;
 };
-
-// TODO: Make a function that will flatten objects as well
 
 const getTheGlobalObject = () => {
     // NOTE: The typeof checks here are solely to avoid a ReferenceError being thrown.
@@ -181,10 +119,8 @@ const getTheGlobalObject = () => {
 const namespace = (...args) => {
     const flattened = flatten(args);
     const lastArg = flattened[flattened.length - 1];
-    // The object to extend
     const base = isExtendableType(flattened[0]) ? flattened[0] : (getTheGlobalObject() || {});
     const force = typeof lastArg === 'boolean' ? lastArg : true;
-    // Semantic fencepost for namespaces
     const separator = '.';
     // Match chains of at least one seperator
     const findSeparators = new RegExp('\\' + separator + '+', 'g');
@@ -195,9 +131,7 @@ const namespace = (...args) => {
     });
     const dotPath = filtered.join(separator).replace(findSeparators, separator);
 
-    // The act of joining and then splitting an array will never result in an empty array,
-    // even if the original was empty. So we need to check that we have not accidentally
-    // inserted data for us to loop over.
+    // Check the filtered length because dotPath.split() will never return an empty list.
     return (filtered.length < 1) ? base : dotPath.split(separator).reduce((result, part) => {
         if (Object.prototype.hasOwnProperty.call(result, part) && isExtendableType(result[part])) {
             return result[part];
@@ -207,29 +141,24 @@ const namespace = (...args) => {
             return result[part];
         }
         throw new TypeError(
-            `Unable to access "${part}" of "${dotPath}" without force mode. ` +
-            'Must be an object or function and an own property.'
+            `Use force mode to write to this property: "${part}" of "${dotPath}"`
         );
     }, base);
 };
 
-// Get the console back. Some sites wipe out the console methods to prevent developers from
-// putting them in production,
-// TODO: Figure out how to make this work in Node.js,
-//       where whatis(console) returns "console"
+// Fix the console. Some sites break the console to prevent engineers from logging in production.
 const resetConsole = () => {
     // Handle cases where they create a mock object and assign it to window.console
-    if (!isConsole(window.console)) {
-        delete window.console;
+    if (!isConsole(console)) {
+        delete getTheGlobalObject().console;
     }
 
-    // Handle cases where they assign empty functions to console's properties,
-    // which come back to life like zombies even after deleting the console.
-    // Both of these are necessary and in this order! Neither handles both.
+    // Handle cases where they assign functions to console properties, which come back to life
+    // like zombies even after deleting the console. Both are necessary and in this order!
     // Also, we need properties from up the prototype chain.
-    for (const property in window.console) {
-        if (isNative(window.console[property]) === false) {
-            delete window.console[property];
+    for (const property in console) {
+        if (isNative(console[property]) === false) {
+            delete console[property];
         }
     }
     // At this point, the important functions should be automatically re-created.
@@ -239,26 +168,14 @@ const samePolarity = (first, ...rest) => {
     if (rest.length < 1) {
         throw new Error('At least two values must be provided to compare.');
     }
-
     const neededPolarity = Boolean(first);
-
     return rest.every((elem) => {
         return Boolean(elem) === neededPolarity;
     });
 };
 
-// TODO: Create function stampArray()
-// TODO: Create function stamp() and make stampObject and stampArray abstract it
-
-// Return a new object with identical values for all property
-// names provided.
+// Return a new object with identical values for all property names provided.
 const stampObject = (_keys, _values) => {
-    // If the user does not provide any useful data...
-    if (!_keys) {
-        // Just give back an empty object...
-        return {};
-    }
-
     const keys = flatten(_keys);
     const values = flatten(_values);
 
@@ -272,29 +189,20 @@ const stampObject = (_keys, _values) => {
     }, {});
 };
 
-// Take an object for inspection and return whether all of its
-// properties match a given value.
+// Check if all of an object's properties match a given value or polarity.
 const checkStamp = (stamp, needle, strict) => {
-    // No matter what, it has to be truthy.
-    if (!stamp) {
-        return;
-    }
+    const check = (value) => {
+        return strict ? value === needle : samePolarity(value, needle);
+    };
     if (isArrayish(stamp)) {
-        // For arrays-like objects, we only consider their numerical indexes.
-        return Array.prototype.slice.call(stamp).every((value) => {
-            return strict ? value === needle : samePolarity(value, needle);
-        });
+        return Array.from(stamp).every(check);
     }
     if (isExtendableType(stamp)) {
-        // For other objects that may have them, we consider all enumerable properties...
-        return Object.values(stamp).every((value) => {
-            return strict ? value === needle : samePolarity(value, needle);
-        });
+        return Object.values(stamp).every(check);
     }
 };
 
-// Make a string, with optional separators, from all arguments of a
-// certain polarity. Useful for paths, etc.
+// Make common string patterns.
 const join = (option, ...values) => {
     // Allow passing a value in the first argument.
     if (!option || typeof option !== 'object') {
@@ -308,68 +216,30 @@ const join = (option, ...values) => {
     return surround ? surround + joined + surround : joined;
 };
 
-// This function is designed to conveniently join all arguments that are truthy,
-// which is useful for constructing URLs and other data based on simple args,
-// without complicated logic.
-const joinTruthy = (option, ...rest) => {
-    const config = (option && typeof option === 'object') ?
-        Object.assign({}, option, {
-            polarity : true
-        }) :
-        option;
+const makeJoiner = (overrideOption) => {
+    return (option, ...rest) => {
+        const config = (option && typeof option === 'object') ?
+            Object.assign({}, option, overrideOption) :
+            option;
 
-    return join(config, ...rest);
+        return join(config, ...rest);
+    };
 };
 
-// Join all arguments with a space, which is useful for
-// making sentences or shell commands.
-const space = (option, ...rest) => {
-    const config = (option && typeof option === 'object') ?
-        Object.assign({}, option, {
-            separator : ' '
-        }) :
-        option;
-
-    return join(config, ...rest);
-};
-
-// Join all truthy arguments with a space, which is useful for
-// making sentences or shell commands.
-const spaceTruthy = (option, ...rest) => {
-    const config = (option && typeof option === 'object') ?
-        Object.assign({}, option, {
-            polarity  : true,
-            separator : ' '
-        }) :
-        option;
-
-    return join(config, ...rest);
-};
-
-// Join and then quote all arguments, which is useful for
-// making sentences or shell commands.
-const quote = (option, ...rest) => {
-    const config = (option && typeof option === 'object') ?
-        Object.assign({}, option, {
-            surround : '"'
-        }) :
-        option;
-
-    return join(config, ...rest);
-};
-
-// Koin and then quote all arguments, which is useful for
-// making sentences or shell commands.
-const quoteTruthy = (option, ...rest) => {
-    const config = (option && typeof option === 'object') ?
-        Object.assign({}, option, {
-            polarity : true,
-            surround : '"'
-        }) :
-        option;
-
-    return join(config, ...rest);
-};
+// Join all arguments that are truthy. Useful for making URLs from template data.
+const joinTruthy = makeJoiner({ polarity : true });
+// Join and separate arguments with a space. Useful for making sentences or shell commands.
+const space = makeJoiner({ separator : ' ' });
+const spaceTruthy = makeJoiner({
+    polarity  : true,
+    separator : ' '
+});
+// Join and quote arguments. Useful for making sentences or shell commands.
+const quote = makeJoiner({ surround : '"' });
+const quoteTruthy = makeJoiner({
+    polarity : true,
+    surround : '"'
+});
 
 const dangit = {
     whatis,
@@ -406,34 +276,22 @@ const dangit = {
 };
 
 // Help inexperienced users and remind people what they can do with the library.
+// TODO: Output in Node.js, where it spews out garbage.
 dangit.help = () => {
-    // TODO: Fix the case where this runs in Node.js and spews out garbage.
     console.log(
         '%cThe dangit public API:',
         'background:blue;color:white;padding:4px 6px;border-radius:4px;line-height:' +
         '2em;font-weight:bold;font-family:Calibri;font-size:2vh;'
     );
-
     Object.entries(dangit).forEach(([key, val]) => {
-        if (key === 'help') {
-            return;
+        if (key !== 'help') {
+            const type = whatis(val);
+            let symbol = type === 'function' ? '()' : '';
+            if (type === 'array') {
+                symbol = '[]';
+            }
+            console.log(`${type.padEnd(8, ' ')} : dangit.${key}${symbol}`);
         }
-        let type = whatis(val);
-        let symbol = '';
-        if (type === 'function') {
-            symbol = '()';
-        }
-        else if (type === 'object') {
-            // Fix alignment.
-            type = 'object  ';
-        }
-        else if (type === 'array') {
-            symbol = '[]';
-        }
-        else if (type === 'string') {
-            type = 'string  ';
-        }
-        console.log(`${type} : dangit.${key}${symbol}`);
     });
 };
 
