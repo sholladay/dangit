@@ -19,8 +19,8 @@ define(() => {
         // Places where unit and/or functional tests will be run.
         environments : [
             // { browserName : 'firefox' },
-            { browserName : 'safari' }
-            // { browserName : 'chrome' }
+            { browserName : 'safari' },
+            { browserName : 'chrome' }
         ],
 
         // How many browsers may be open at once.

@@ -103,7 +103,8 @@ const isDeep = (obj) => {
 };
 
 const isConsole = (obj) => {
-    return whatis(obj) === 'console';
+    // Unfortunately, Chrome returns 'object' instead of 'console'
+    return whatis(obj) === 'console' || obj === console;
 };
 
 // Determine whether an object is a DOM element, in a much more robust way
