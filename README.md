@@ -1,4 +1,4 @@
-# dangit [![Build status for dangit](https://img.shields.io/codeship/54787680-bd3b-0132-ea67-02fb30cbf240/master.svg "Build Status")](https://codeship.com/projects/72554 "Builds")
+# dangit [![Build status for dangit](https://img.shields.io/codeship/54787680-bd3b-0132-ea67-02fb30cbf240/master.svg "Build Status")](https://codeship.com/projects/72554 "Builds") [![Browser test status](https://browserstack.com/automate/badge.svg?badge_key=RTN6aUpBRFM4Uys2S1hjQ2RkOUl3QVBQandqMmFPbTd4UUhHcGhmWXpIOD0tLWJ1RE9qWXNzOUx4dm1wNWVkdmVEWWc9PQ==--df8d57542c44c7b9ff68afc68d53fd0c93b18a14 "Browser Test Status")](https://browserstack.com/automate/public-build/RTN6aUpBRFM4Uys2S1hjQ2RkOUl3QVBQandqMmFPbTd4UUhHcGhmWXpIOD0tLWJ1RE9qWXNzOUx4dm1wNWVkdmVEWWc9PQ==--df8d57542c44c7b9ff68afc68d53fd0c93b18a14 "Browser Tests")
 
 > A utility library for JavaScript quirks.
 
@@ -270,6 +270,12 @@ Returns a `boolean` for whether `target` is a date.
 ### quote()
 
 ### quoteTruthy()
+
+## Thanks
+
+Tested on real browsers provided by:
+
+<a title="Browser Testing Cloud" href="https://browserstack.com"><img title="BrowserStack" alt="BrowserStack logo" width="300" src="https://browserstack.com/images/layout/logo.svg"></a>
 
 ## Contributing
 
