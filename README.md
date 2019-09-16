@@ -1,4 +1,4 @@
-# dangit [![Build status for dangit](https://travis-ci.com/sholladay/dangit.svg?branch=master "Build Status")](https://travis-ci.com/sholladay/dangit "Builds")
+# dangit [![Build status for dangit](https://travis-ci.com/sholladay/dangit.svg?branch=master "Build Status")](https://travis-ci.com/sholladay/dangit "Builds") [![Browser test status](https://automate.browserstack.com/badge.svg?badge_key=ekYxd1VxTXNEejJyekU0SzF0L0pLMHNoVnRMRmxMS3UxcVlPQzl1NUtHTT0tLUlhZVQxMFlQNkRiMENnVEdmemttenc9PQ==--34beab5bacd4d6d5fbfd6d81a41497cd6ed2f4e2 "Browser Test Status")](https://automate.browserstack.com/public-build/ekYxd1VxTXNEejJyekU0SzF0L0pLMHNoVnRMRmxMS3UxcVlPQzl1NUtHTT0tLUlhZVQxMFlQNkRiMENnVEdmemttenc9PQ==--34beab5bacd4d6d5fbfd6d81a41497cd6ed2f4e2 "Browser Tests")
 
 > A utility library for JavaScript quirks.
 
