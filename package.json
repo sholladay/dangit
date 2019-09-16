@@ -17,7 +17,7 @@
         "pretest": "npm run build",
         "test": "xo && intern-runner config=config/intern",
         "test-cloud": "npm run build && xo && intern-runner config=config/intern-cloud",
-        "test-ci": "npm run build && xo && intern-runner config=config/intern-ci build=$CI_COMMIT_ID"
+        "test-ci": "npm run build && xo && intern-runner config=config/intern-ci build=$TRAVIS_COMMIT"
     },
     "repository": {
         "type": "git",
