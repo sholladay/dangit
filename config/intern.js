@@ -65,7 +65,7 @@ define(() => {
         // Ignore some code from test coverage reports, even if it loads
         // during testing. The paths that match this pattern will NOT
         // count against coverage.
-        excludeInstrumentation : /^(?:config|test|node_modules)\//
+        excludeInstrumentation : /^(?:config|test|node_modules)\//u
 
         // How to display or save test run info.
         // reporters : [

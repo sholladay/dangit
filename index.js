@@ -1,13 +1,13 @@
 // Get the real type of an object to workaround reliability issues with typeof and instanceof.
 const whatis = (obj, lowerCase) => {
     // Using the safest toString possible, get the object type from the '[object Foo]' string.
-    const type = Object.prototype.toString.call(obj).match(/ (.+?)]/)[1];
+    const type = Object.prototype.toString.call(obj).match(/ (.+?)\]/u)[1];
     return (lowerCase || typeof lowerCase === 'undefined') ? type.toLowerCase() : type;
 };
 
 // Get a human friendly version of an object's class.
 const describe = (obj) => {
-    return whatis(obj, false).replace(/(?=[A-Z][a-z])/g, ' ').trimLeft();
+    return whatis(obj, false).replace(/(?=[A-Z][a-z])/gu, ' ').trimLeft();
 };
 
 // Check if a function (e.g. console.log) has been modified. Sadly, this only works on functions.
@@ -17,7 +17,7 @@ const isNative = (context) => {
     }
     // Using the safest toString possible, look for 'native code' in a way that's hard to fool.
     // The regex takes into account browser quirks that output the string differently.
-    return /^function .*?\(.*?\)\s*?\{\s*?\[native code\]/.test(
+    return /^function .*?\(.*?\)\s*?\{\s*?\[native code\]/u.test(
         Function.prototype.toString.call(context)
     );
 };
@@ -51,9 +51,8 @@ const isConsole = (obj) => {
     // Unfortunately, Chrome returns 'object' instead of 'console'
     return whatis(obj) === 'console' || obj === console;
 };
-// Determine if an object is a DOM elemen. More robust than duck typing.
 const isElement = (obj) => {
-    return /html\w+element/.test(whatis(obj));
+    return /html\w+element/u.test(whatis(obj));
 };
 const isElementList = (obj) => {
     const objType = whatis(obj);
@@ -123,7 +122,7 @@ const namespace = (...args) => {
     const force = typeof lastArg === 'boolean' ? lastArg : true;
     const separator = '.';
     // Match chains of at least one seperator
-    const findSeparators = new RegExp('\\' + separator + '+', 'g');
+    const findSeparators = new RegExp('\\' + separator + '+', 'gu');
     const filtered = flattened.filter((item) => {
         // True if argument should be used as a namespace. Note that its .toString() will be
         // called when setting it as a property.
@@ -132,7 +131,7 @@ const namespace = (...args) => {
     const dotPath = filtered.join(separator).replace(findSeparators, separator);
 
     // Check the filtered length because dotPath.split() will never return an empty list.
-    return (filtered.length < 1) ? base : dotPath.split(separator).reduce((result, part) => {
+    return (filtered.length === 0) ? base : dotPath.split(separator).reduce((result, part) => {
         if (Object.prototype.hasOwnProperty.call(result, part) && isExtendableType(result[part])) {
             return result[part];
         }
@@ -161,11 +160,10 @@ const resetConsole = () => {
             delete console[property];
         }
     }
-    // At this point, the important functions should be automatically re-created.
 };
 
 const samePolarity = (first, ...rest) => {
-    if (rest.length < 1) {
+    if (rest.length === 0) {
         throw new Error('At least two values must be provided to compare.');
     }
     const neededPolarity = Boolean(first);
@@ -179,7 +177,6 @@ const stampObject = (_keys, _values) => {
     const keys = flatten(_keys);
     const values = flatten(_values);
 
-    // Used to avoid iterating past a sensible index
     const lastValueIndex = values.length - 1;
     return keys.reduce((obj, key, index) => {
         // Extract a value from the list between its first and last index,
@@ -208,7 +205,7 @@ const join = (option, ...values) => {
     if (!option || typeof option !== 'object') {
         values.unshift(option);
     }
-    const { separator, polarity, surround } = Object.assign({}, option);
+    const { separator, polarity, surround } = { ...option };
     const filtered = typeof polarity === 'undefined' ? values : values.filter((value) => {
         return polarity ? value : !value;
     });
@@ -219,7 +216,10 @@ const join = (option, ...values) => {
 const makeJoiner = (overrideOption) => {
     return (option, ...rest) => {
         const config = (option && typeof option === 'object') ?
-            Object.assign({}, option, overrideOption) :
+            {
+                ...option,
+                ...overrideOption
+            } :
             option;
 
         return join(config, ...rest);
@@ -275,8 +275,7 @@ const dangit = {
     quoteTruthy
 };
 
-// Help inexperienced users and remind people what they can do with the library.
-// TODO: Output in Node.js, where it spews out garbage.
+// TODO: Fix output in Node.js, where it spews out garbage.
 dangit.help = () => {
     console.log(
         '%cThe dangit public API:',

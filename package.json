@@ -32,10 +32,10 @@
         "build"
     ],
     "devDependencies": {
-        "eslint-config-tidy": "^0.5.0",
+        "eslint-config-tidy": "^0.8.1",
         "intern": "^3.2.3",
-        "rollup": "^0.50.0",
-        "xo": "^0.18.2"
+        "rollup": "^1.21.4",
+        "xo": "^0.24.0"
     },
     "keywords": [
         "lodash",
@@ -64,9 +64,14 @@
                     "capitalized-comments": "off",
                     "import/no-amd": "off",
                     "no-multi-spaces": "off",
+                    "object-curly-newline": "off",
                     "object-property-newline": "off"
                 }
             }
-        ]
+        ],
+        "rules": {
+            "prefer-named-capture-group": "off",
+            "unicorn/prefer-spread": "off"
+        }
     }
 }

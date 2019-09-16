@@ -3,7 +3,7 @@
 define(
     [
         'intern',    // API for the test framework
-        './intern',  // base configuration
+        './intern',  // Base configuration
         'intern/dojo/text!../package.json'
     ],
     (intern, config, pkgStr) => {

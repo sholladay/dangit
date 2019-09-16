@@ -15,7 +15,7 @@ define(
         // to indicate that the test was triggered by CI and not
         // a developer.
         config.capabilities.name = config.capabilities.name.replace(
-            /^.+?(?=\s)/, 'CI'
+            /^.+?(?=\s)/u, 'CI'
         );
 
         return config;
